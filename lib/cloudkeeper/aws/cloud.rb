@@ -7,11 +7,11 @@ module Cloudkeeper
     class Cloud
       attr_reader :s3, :bucket, :ec2
 
-      SUCCESSFUL_STATUS = ['completed'].freeze
-      UNSUCCESSFUL_STATUS = ['failed', 'deleted'].freeze
+      SUCCESSFUL_STATUS = %w[completed].freeze
+      UNSUCCESSFUL_STATUS = %w[failed deleted].freeze
 
       # Constructs Cloud object that can communicate with AWS cloud.
-      # 
+      #
       # @note This method can be billed by AWS
       def initialize
         region = Cloudkeeper::Aws::Settings.aws.region
@@ -22,14 +22,17 @@ module Cloudkeeper
       end
 
       # Uploads data in block AWS file with given name
-      # 
+      #
       # @note This method can be billed by AWS
       # @param file_name [String] key of object in bucket
       # @yield [data] data to send
       # @raise [Cloudkeeper::Aws::Errors::BackendError] if file already exists
       def upload_data(file_name, &block)
         obj = bucket.object(file_name)
-        raise Cloudkeeper::Aws::Errors::BackendError, "File #{file_name} in AWS bucket already exists" if obj.exists?
+        if obj.exists?
+          raise Cloudkeeper::Aws::Errors::BackendError,
+                "File #{file_name} in AWS bucket already exists"
+        end
         obj.upload_stream(&block)
       end
 
@@ -39,19 +42,25 @@ module Cloudkeeper
       # @note This method can be billed by AWS
       # @params appliance [Appliance] data about image
       def start_import_image(appliance)
-        ec2.import_image({
+        ec2.import_image(
           description: appliance.description,
-          disk_containers: [
-            {
-              description: appliance.description,
-              format: appliance.image.format,
-              user_bucket: {
-                s3_bucket: @bucket.name,
-                s3_key: appliance.title
-              }
-            }
-          ]
-        }).import_task_id
+          disk_containers: [disk_container(appliance)]
+        ).import_task_id
+      end
+
+      # Method used for generating dick container for import image task
+      #
+      # @params appliance [Appliance] data about image
+      # @return [Hash] disk container hash
+      def disk_container(appliance)
+        {
+          description: appliance.description,
+          format: appliance.image.format,
+          user_bucket: {
+            s3_bucket: @bucket.name,
+            s3_key: appliance.title
+          }
+        }
       end
 
       # Polls for import image task result. This method is blocking, so
@@ -63,9 +72,9 @@ module Cloudkeeper
       def poll_import_task(import_id)
         sleep_time = Cloudkeeper::Aws::Settings.polling_interval
         loop do
-          import_task = ec2.describe_import_image_tasks({
+          import_task = ec2.describe_import_image_tasks(
             import_task_ids: [import_id]
-          }).import_image_tasks.first
+          ).import_image_tasks.first
 
           return true if SUCCESSFUL_STATUS.include?(import_task.status)
           return false if UNSUCCESSFUL_STATUS.include?(import_task.status)
@@ -79,11 +88,11 @@ module Cloudkeeper
       # @note This method can be billed by AWS
       # @param image_id [String] id of specific AMI
       def deregister_image(image_id)
-        ec2.deregister_image({
+        ec2.deregister_image(
           image_id: image_id
-        })
+        )
       end
-      
+
       # Sets tags to specific AMI.
       #
       # @note This method can be billed by AWS
@@ -91,10 +100,10 @@ module Cloudkeeper
       #   to specific AMI. Tag consists of key and value symbols
       # @param image_id [String] id of specific AMI
       def set_tags(tags, image_id)
-        ec2.create_tags({
+        ec2.create_tags(
           resources: [image_id],
           tags: tags
-        })
+        )
       end
 
       # Searches in AWS for images with specific tags. Returns only
@@ -103,11 +112,12 @@ module Cloudkeeper
       # @note This method can be billed by AWS
       # @param tags_filter [Array<Hash{Symbol => String, Array<String>}>] how to
       #   filter resources. Contains `:name` and `:values`.
-      # @return [Array<Types::TagDescriptor>] contains `:key`, `:value` and `:resource_id`
+      # @return [Array<Types::TagDescriptor>] contains `:key`, `:value`
+      #   and `:resource_id`
       def search_tags(tags_filter)
-        ec2.describe_tags({
+        ec2.describe_tags(
           filters: tags_filter
-        }).tags.keep_if { |resource| resource.resource_type: 'image' }
+        ).tags.keep_if { |resource| resource.resource_type == 'image' }
       end
     end
   end
