@@ -26,9 +26,10 @@ module Cloudkeeper
       # @note This method can be billed by AWS
       # @param file_name [String] key of object in bucket
       # @yield [data] data to send
+      # @raise [Cloudkeeper::Aws::Errors::BackendError] if file already exists
       def upload_data(file_name, &block)
         obj = bucket.object(file_name)
-        raise "File #{file_name} in AWS bucket already exists" if obj.exists?
+        raise Cloudkeeper::Aws::Errors::BackendError, "File #{file_name} in AWS bucket already exists" if obj.exists?
         obj.upload_stream(&block)
       end
 

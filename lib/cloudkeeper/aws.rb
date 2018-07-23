@@ -3,6 +3,7 @@ module Cloudkeeper
   module Aws
     autoload :Cloud, 'cloudkeeper/aws/cloud'
     autoload :Settings, 'cloudkeeper/aws/settings'
+    autoload :Errors, 'cloudkeeper/aws/errors'
   end
 end
 
