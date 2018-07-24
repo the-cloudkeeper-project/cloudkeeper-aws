@@ -13,10 +13,10 @@ module Cloudkeeper
       # Constructs Cloud object that can communicate with AWS cloud.
       #
       # @note This method can be billed by AWS
-      def initialize
+      def initialize(s3service: nil, ec2service: nil)
         region = Cloudkeeper::Aws::Settings.aws.region
-        @s3 = ::Aws::S3::Resource.new(region: region)
-        @ec2 = ::Aws::EC2::Client.new(region: region)
+        @s3 = s3service || ::Aws::S3::Resource.new(region: region)
+        @ec2 = ec2service || ::Aws::EC2::Client.new(region: region)
         @bucket = s3.bucket(Cloudkeeper::Aws::Settings.bucket_name)
         bucket.create unless bucket.exists?
       end
@@ -25,7 +25,7 @@ module Cloudkeeper
       #
       # @note This method can be billed by AWS
       # @param file_name [String] key of object in bucket
-      # @yield [data] data to send
+      # @yield [write_stream] output stream
       # @raise [Cloudkeeper::Aws::Errors::BackendError] if file already exists
       def upload_data(file_name, &block)
         obj = bucket.object(file_name)
