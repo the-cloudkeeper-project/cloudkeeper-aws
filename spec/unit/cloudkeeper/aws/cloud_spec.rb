@@ -70,20 +70,24 @@ module Cloudkeeper
       end
 
       describe '.search_tags' do
+        def stub_describe_tags(stub_tags)
+          lambda do |context|
+            filtered_tags = stub_tags.select do |tag|
+              context.params[:filters].find do |filter|
+                name = filter[:name] == tag[:key]
+                value = filter[:values].empty? ? true : filter[:values].include?(tag[:value])
+                name && value
+              end
+            end
+
+            { tags: filtered_tags }
+          end
+        end
+
         context 'with no resources' do
           before do
             stub_tags = []
-            ec2.stub_responses(:describe_tags, lambda do |context|
-              filtered_tags = stub_tags.select do |t|
-                context.params[:filters].find do |f|
-                  n = f[:name] == t[:key]
-                  v = f[:values].empty? ? true : f[:values].include?(t[:value])
-                  n && v
-                end
-              end
-
-              { tags: filtered_tags }
-            end)
+            ec2.stub_responses(:describe_tags, stub_describe_tags(stub_tags))
           end
 
           it 'returns empty array' do
@@ -95,21 +99,12 @@ module Cloudkeeper
         context 'with no image resources' do
           before do
             stub_tags = [
-              { key: 'cloudkeeper', resource_id: '0', resource_type: 'instance', value: 'yes' },
-              { key: 'image-list-id', resource_id: '0', resource_type: 'instance', value: '8' }
+              { key: 'cloudkeeper', resource_id: '0',
+                resource_type: 'instance', value: 'yes' },
+              { key: 'image-list-id', resource_id: '0',
+                resource_type: 'instance', value: '8' }
             ]
-
-            ec2.stub_responses(:describe_tags, lambda do |context|
-              filtered_tags = stub_tags.select do |t|
-                context.params[:filters].find do |f|
-                  n = f[:name] == t[:key]
-                  v = f[:values].empty? ? true : f[:values].include?(t[:value])
-                  n && v
-                end
-              end
-
-              { tags: filtered_tags }
-            end)
+            ec2.stub_responses(:describe_tags, stub_describe_tags(stub_tags))
           end
 
           it 'searches for cloudkeeper tag' do
@@ -126,23 +121,16 @@ module Cloudkeeper
         context 'with multiple resources' do
           before do
             stub_tags = [
-              { key: 'cloudkeeper', resource_id: '0', resource_type: 'instance', value: 'yes' },
-              { key: 'image-list-id', resource_id: '0', resource_type: 'instance', value: '8' },
-              { key: 'cloudkeeper', resource_id: '1', resource_type: 'image', value: 'yes' },
-              { key: 'image-list-id', resource_id: '1', resource_type: 'image', value: '8' }
+              { key: 'cloudkeeper', resource_id: '0',
+                resource_type: 'instance', value: 'yes' },
+              { key: 'image-list-id', resource_id: '0',
+                resource_type: 'instance', value: '8' },
+              { key: 'cloudkeeper', resource_id: '1',
+                resource_type: 'image', value: 'yes' },
+              { key: 'image-list-id', resource_id: '1',
+                resource_type: 'image', value: '8' }
             ]
-
-            ec2.stub_responses(:describe_tags, lambda do |context|
-              filtered_tags = stub_tags.select do |t|
-                context.params[:filters].find do |f|
-                  n = f[:name] == t[:key]
-                  v = f[:values].empty? ? true : f[:values].include?(t[:value])
-                  n && v
-                end
-              end
-
-              { tags: filtered_tags }
-            end)
+            ec2.stub_responses(:describe_tags, stub_describe_tags(stub_tags))
           end
 
           it 'searches for cloudkeeper tag' do
