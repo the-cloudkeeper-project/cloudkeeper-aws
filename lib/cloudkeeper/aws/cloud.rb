@@ -41,6 +41,7 @@ module Cloudkeeper
       #
       # @note This method can be billed by AWS
       # @params appliance [Appliance] data about image
+      # @return [Number] import task id
       def start_import_image(appliance)
         ec2.import_image(
           description: appliance.description,
@@ -48,7 +49,7 @@ module Cloudkeeper
         ).import_task_id
       end
 
-      # Method used for generating dick container for import image task
+      # Method used for generating disk container for import image task
       #
       # @params appliance [Appliance] data about image
       # @return [Hash] disk container hash
@@ -114,7 +115,7 @@ module Cloudkeeper
       #   filter resources. Contains `:name` and `:values`.
       # @return [Array<Types::TagDescriptor>] contains `:key`, `:value`
       #   and `:resource_id`
-      def search_tags(tags_filter)
+      def search_tags(tags_filters)
         ec2.describe_tags(
           filters: tags_filter
         ).tags.keep_if { |resource| resource.resource_type == 'image' }
