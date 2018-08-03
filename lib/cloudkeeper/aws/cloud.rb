@@ -1,5 +1,6 @@
 require 'aws-sdk-s3'
 require 'aws-sdk-ec2'
+require 'timeout'
 
 module Cloudkeeper
   module Aws
@@ -8,7 +9,7 @@ module Cloudkeeper
       attr_reader :s3, :bucket, :ec2
 
       SUCCESSFUL_STATUS = %w[completed].freeze
-      UNSUCCESSFUL_STATUS = %w[failed deleted].freeze
+      UNSUCCESSFUL_STATUS = %w[deleted].freeze
 
       # Constructs Cloud object that can communicate with AWS cloud.
       #
@@ -40,7 +41,7 @@ module Cloudkeeper
       # polled for. See {#poll_import_task}.
       #
       # @note This method can be billed by AWS
-      # @params appliance [Appliance] data about image
+      # @param appliance [Appliance] data about image
       # @return [Number] import task id
       def start_import_image(appliance)
         ec2.import_image(
@@ -51,7 +52,7 @@ module Cloudkeeper
 
       # Method used for generating disk container for import image task
       #
-      # @params appliance [Appliance] data about image
+      # @param appliance [Appliance] data about image
       # @return [Hash] disk container hash
       def disk_container(appliance)
         {
@@ -69,18 +70,29 @@ module Cloudkeeper
       # return true or false.
       #
       # @note This method can be billed by AWS
-      # @params import_id [String] id of import image task
+      # @param import_id [String] id of import image task
+      # @raise [Cloudkeeper::Aws::Errors::BackendError] if polling timed out
       def poll_import_task(import_id)
-        sleep_time = Cloudkeeper::Aws::Settings.polling_interval
+        Timeout.timeout(Cloudkeeper::Aws::Settings.polling_timeout,
+                        Cloudkeeper::Aws::Errors::BackendError) do
+          interval Cloudkeeper::Aws::Settings.polling_interval do
+            import_task = ec2.describe_import_image_tasks(
+              import_task_ids: [import_id]
+            ).import_image_tasks.first
+
+            return true if SUCCESSFUL_STATUS.include?(import_task.status)
+            return false if UNSUCCESSFUL_STATUS.include?(import_task.status)
+          end
+        end
+      end
+
+      # Simple method used for calling block in intervals
+      #
+      # @param delay [Number] seconds to wait
+      def interval(delay)
         loop do
-          import_task = ec2.describe_import_image_tasks(
-            import_task_ids: [import_id]
-          ).import_image_tasks.first
-
-          return true if SUCCESSFUL_STATUS.include?(import_task.status)
-          return false if UNSUCCESSFUL_STATUS.include?(import_task.status)
-
-          sleep sleep_time
+          sleep delay
+          yield
         end
       end
 
@@ -117,7 +129,7 @@ module Cloudkeeper
       #   and `:resource_id`
       def search_tags(tags_filters)
         ec2.describe_tags(
-          filters: tags_filter
+          filters: tags_filters
         ).tags.keep_if { |resource| resource.resource_type == 'image' }
       end
     end
