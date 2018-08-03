@@ -67,6 +67,45 @@ module Cloudkeeper
             expect(cloud.poll_import_task(import_id)).to be(true)
           end
         end
+
+        context 'with changing status' do
+          before do
+            ec2.stub_responses(:describe_import_image_tasks, lambda do |_|
+              { import_image_tasks: [{ status: status_sequence.shift }] }
+            end)
+          end
+
+          context 'with final deleted' do
+            let(:status_sequence) { %w[active active active deleted] }
+
+            it 'returns false' do
+              expect(cloud.poll_import_task(import_id)).to be(false)
+            end
+          end
+
+          context 'with final completed' do
+            let(:status_sequence) { %w[active active active completed] }
+
+            it 'returns true' do
+              expect(cloud.poll_import_task(import_id)).to be(true)
+            end
+          end
+        end
+
+        context 'with timeout' do
+          before do
+            Cloudkeeper::Aws::Settings['polling_timeout'] = 1
+          end
+
+          after do
+            Cloudkeeper::Aws::Settings['polling_timeout'] = 3600
+          end
+
+          it 'raises exception' do
+            expect { cloud.poll_import_task(import_id) }.to \
+              raise_error(Cloudkeeper::Aws::Errors::BackendError)
+          end
+        end
       end
 
       describe '.search_tags' do
