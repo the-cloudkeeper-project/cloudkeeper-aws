@@ -1,0 +1,15 @@
+require: rubocop-rspec
+
+Metrics/BlockLength:
+    Exclude:
+        - 'Rakefile'
+        - '**/*.rake'
+        - 'spec/**/*.rb'
+        - '*.gemspec'
+
+Metrics/ModuleLength:
+    Exclude:
+        - 'spec/**/*.rb'
+
+Metrics/LineLength:
+    Max: 135

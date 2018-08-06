@@ -7,6 +7,9 @@ rvm:
   - 2.3.3
   - 2.4.0
 
+matrix:
+    allow_failures:
+        - rvm: ruby-head
 fast_finish: true
 
 branches:
