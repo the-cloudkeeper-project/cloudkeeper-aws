@@ -109,13 +109,17 @@ module Cloudkeeper
       end
 
       describe '.search_tags' do
+        def filter_tag_comparator(filter, tag)
+          return false if filter[:name] != tag[:key]
+          return true if filter[:values].empty?
+          filter[:values].include?(tag[:value])
+        end
+
         def stub_describe_tags(stub_tags)
           lambda do |context|
             filtered_tags = stub_tags.select do |tag|
               context.params[:filters].find do |filter|
-                name = filter[:name] == tag[:key]
-                value = filter[:values].empty? ? true : filter[:values].include?(tag[:value])
-                name && value
+                filter_tag_comparator(filter, tag)
               end
             end
 
