@@ -73,25 +73,28 @@ module Cloudkeeper
       # @param import_id [String] id of import image task
       # @raise [Cloudkeeper::Aws::Errors::BackendError] if polling timed out
       def poll_import_task(import_id)
-        Timeout.timeout(Cloudkeeper::Aws::Settings.polling_timeout,
-                        Cloudkeeper::Aws::Errors::BackendError) do
-          interval Cloudkeeper::Aws::Settings.polling_interval do
-            import_task = ec2.describe_import_image_tasks(
-              import_task_ids: [import_id]
-            ).import_image_tasks.first
-
-            return true if SUCCESSFUL_STATUS.include?(import_task.status)
-            return false if UNSUCCESSFUL_STATUS.include?(import_task.status)
+        timeout do
+          interval do
+            import_task = ec2.describe_import_image_tasks(import_task_ids: [import_id]).import_image_tasks.first
+            raise Cloudkeeper::Aws::Errors::BackendError, "Import failed with status #{import_task.status}" \
+                  if UNSUCCESSFUL_STATUS.include?(import_task.status)
+            return import_task.image_id if SUCCESSFUL_STATUS.include?(import_task.status)
           end
         end
       end
 
       # Simple method used for calling block in intervals
-      #
-      # @param delay [Number] seconds to wait
-      def interval(delay)
+      def interval
         loop do
-          sleep delay
+          sleep Cloudkeeper::Aws::Settings.polling_interval
+          yield
+        end
+      end
+
+      # Simple method used for handling timeout
+      def timeout
+        Timeout.timeout(Cloudkeeper::Aws::Settings.polling_timeout,
+                        Cloudkeeper::Aws::Errors::TimeoutError) do
           yield
         end
       end
