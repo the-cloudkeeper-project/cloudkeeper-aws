@@ -60,7 +60,7 @@ module Cloudkeeper
           format: appliance.image.format,
           user_bucket: {
             s3_bucket: @bucket.name,
-            s3_key: appliance.title
+            s3_key: appliance.identifier
           }
         }
       end
