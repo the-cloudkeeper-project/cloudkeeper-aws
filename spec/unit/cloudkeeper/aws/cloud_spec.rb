@@ -52,8 +52,9 @@ module Cloudkeeper
                                import_image_tasks: [{ status: 'deleted' }])
           end
 
-          it 'returns false' do
-            expect(cloud.poll_import_task(import_id)).to be(false)
+          it 'raises error' do
+            expect { cloud.poll_import_task(import_id) }.to \
+              raise_error(Cloudkeeper::Aws::Errors::BackendError)
           end
         end
 
@@ -63,8 +64,8 @@ module Cloudkeeper
                                import_image_tasks: [{ status: 'completed' }])
           end
 
-          it 'returns true' do
-            expect(cloud.poll_import_task(import_id)).to be(true)
+          it 'wont raise error' do
+            expect { cloud.poll_import_task(import_id) }.not_to raise_error
           end
         end
 
@@ -79,7 +80,8 @@ module Cloudkeeper
             let(:status_sequence) { %w[active active active deleted] }
 
             it 'returns false' do
-              expect(cloud.poll_import_task(import_id)).to be(false)
+              expect { cloud.poll_import_task(import_id) }.to \
+                raise_error(Cloudkeeper::Aws::Errors::BackendError)
             end
           end
 
@@ -87,7 +89,7 @@ module Cloudkeeper
             let(:status_sequence) { %w[active active active completed] }
 
             it 'returns true' do
-              expect(cloud.poll_import_task(import_id)).to be(true)
+              expect { cloud.poll_import_task(import_id) }.not_to raise_error
             end
           end
         end
@@ -103,7 +105,7 @@ module Cloudkeeper
 
           it 'raises exception' do
             expect { cloud.poll_import_task(import_id) }.to \
-              raise_error(Cloudkeeper::Aws::Errors::BackendError)
+              raise_error(Cloudkeeper::Aws::Errors::TimeoutError)
           end
         end
       end
