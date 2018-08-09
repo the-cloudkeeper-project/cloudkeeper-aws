@@ -4,6 +4,7 @@ module Cloudkeeper
     module Errors
       autoload :StandardError, 'cloudkeeper/aws/errors/standard_error'
       autoload :BackendError, 'cloudkeeper/aws/errors/backend_error'
+      autoload :TimeoutError, 'cloudkeeper/aws/errors/timeout_error'
     end
   end
 end
