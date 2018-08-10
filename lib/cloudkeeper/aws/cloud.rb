@@ -74,7 +74,7 @@ module Cloudkeeper
       # @raise [Cloudkeeper::Aws::Errors::BackendError] if polling timed out
       def poll_import_task(import_id)
         timeout do
-          interval do
+          sleep_loop do
             import_task = ec2.describe_import_image_tasks(import_task_ids: [import_id]).import_image_tasks.first
             raise Cloudkeeper::Aws::Errors::BackendError, "Import failed with status #{import_task.status}" \
                   if UNSUCCESSFUL_STATUS.include?(import_task.status)
@@ -84,7 +84,7 @@ module Cloudkeeper
       end
 
       # Simple method used for calling block in intervals
-      def interval
+      def sleep_loop
         loop do
           sleep Cloudkeeper::Aws::Settings.polling_interval
           yield
