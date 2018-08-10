@@ -1,0 +1,12 @@
+module Cloudkeeper
+  module Aws
+    module Errors
+      # Module used for errors raised by AWS backend
+      module Backend
+        autoload :BackendError, 'cloudkeeper/aws/errors/backend/backend_error'
+        autoload :TimeoutError, 'cloudkeeper/aws/errors/backend/timeout_error'
+        autoload :ImageImportError, 'cloudkeeper/aws/errors/backend/image_import_error'
+      end
+    end
+  end
+end

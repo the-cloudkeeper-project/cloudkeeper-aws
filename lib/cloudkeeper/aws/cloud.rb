@@ -31,7 +31,7 @@ module Cloudkeeper
       def upload_data(file_name, &block)
         obj = bucket.object(file_name)
         if obj.exists?
-          raise Cloudkeeper::Aws::Errors::BackendError,
+          raise Cloudkeeper::Aws::Errors::Backend::BackendError,
                 "File #{file_name} in AWS bucket already exists"
         end
         obj.upload_stream(&block)
@@ -76,7 +76,7 @@ module Cloudkeeper
         timeout do
           sleep_loop do
             import_task = ec2.describe_import_image_tasks(import_task_ids: [import_id]).import_image_tasks.first
-            raise Cloudkeeper::Aws::Errors::BackendError, "Import failed with status #{import_task.status}" \
+            raise Cloudkeeper::Aws::Errors::Backend::ImageImportError, "Import failed with status #{import_task.status}" \
                   if UNSUCCESSFUL_STATUS.include?(import_task.status)
             return import_task.image_id if SUCCESSFUL_STATUS.include?(import_task.status)
           end
@@ -94,7 +94,7 @@ module Cloudkeeper
       # Simple method used for handling timeout
       def timeout
         Timeout.timeout(Cloudkeeper::Aws::Settings.polling_timeout,
-                        Cloudkeeper::Aws::Errors::TimeoutError) do
+                        Cloudkeeper::Aws::Errors::Backend::TimeoutError) do
           yield
         end
       end

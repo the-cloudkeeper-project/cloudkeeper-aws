@@ -38,7 +38,7 @@ module Cloudkeeper
             expect do
               cloud.upload_data(filename) \
                 { |write_stream| write_stream << data }
-            end.to raise_error(Cloudkeeper::Aws::Errors::BackendError)
+            end.to raise_error(Cloudkeeper::Aws::Errors::Backend::BackendError)
           end
         end
       end
@@ -54,7 +54,7 @@ module Cloudkeeper
 
           it 'raises error' do
             expect { cloud.poll_import_task(import_id) }.to \
-              raise_error(Cloudkeeper::Aws::Errors::BackendError)
+              raise_error(Cloudkeeper::Aws::Errors::Backend::ImageImportError)
           end
         end
 
@@ -81,7 +81,7 @@ module Cloudkeeper
 
             it 'returns false' do
               expect { cloud.poll_import_task(import_id) }.to \
-                raise_error(Cloudkeeper::Aws::Errors::BackendError)
+                raise_error(Cloudkeeper::Aws::Errors::Backend::ImageImportError)
             end
           end
 
@@ -105,7 +105,7 @@ module Cloudkeeper
 
           it 'raises exception' do
             expect { cloud.poll_import_task(import_id) }.to \
-              raise_error(Cloudkeeper::Aws::Errors::TimeoutError)
+              raise_error(Cloudkeeper::Aws::Errors::Backend::TimeoutError)
           end
         end
       end
