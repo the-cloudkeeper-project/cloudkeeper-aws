@@ -1,7 +1,7 @@
 module Cloudkeeper
   module Aws
     module Errors
-      class BackendError < StandardError; end
+      class ImageDownloadError < StandardError; end
     end
   end
 end
