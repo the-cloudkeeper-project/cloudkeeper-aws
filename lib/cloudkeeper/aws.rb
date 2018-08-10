@@ -5,6 +5,7 @@ module Cloudkeeper
     autoload :Cloud, 'cloudkeeper/aws/cloud'
     autoload :Settings, 'cloudkeeper/aws/settings'
     autoload :Errors, 'cloudkeeper/aws/errors'
+    autoload :ImageDownloader, 'cloudkeeper/aws/image_downloader'
   end
 end
 
