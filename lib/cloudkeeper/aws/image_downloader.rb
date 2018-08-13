@@ -7,6 +7,8 @@ module Cloudkeeper
       # Downloads file from uri by segments
       #
       # @param image_uri [String] uri of the image to download
+      # @param limit [Number] redirect limit to handle redirect infinite loops
+      # @yield [segment] data segment
       # @raise [Cloudkeeper::Aws:Errors::ImageDownloadError] if download failed
       def self.download(image_uri, limit = 10, &block)
         raise Cloudkeeper::Aws::Errors::ImageDownloadError, 'Too many redirects' \
