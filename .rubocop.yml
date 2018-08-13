@@ -1,11 +1,11 @@
 require: rubocop-rspec
 
 Metrics/BlockLength:
-    Exclude:
-        - 'Rakefile'
-        - '**/*.rake'
-        - 'spec/**/*.rb'
-        - '*.gemspec'
+  Exclude:
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'spec/**/*.rb'
+    - '*.gemspec'
 
 Metrics/ModuleLength:
   Exclude:

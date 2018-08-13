@@ -74,7 +74,7 @@ module Cloudkeeper
 
           it 'does not upload image' do
             expect { core_connector.add_appliance(appliance, nil) }.to \
-              raise_error(Cloudkeeper::Aws::Errors::Backend::BackendError)
+              raise_error(GRPC::BadStatus)
           end
         end
       end
@@ -234,7 +234,6 @@ module Cloudkeeper
         end
 
         context 'with one appliance in image list' do
-          using Cloudkeeper::Aws::ProtoHelper
           it 'returns 1 appliance' do
             expect(core_connector.appliances(image_list_identifier, nil)).to \
               contain_exactly(appliance)
