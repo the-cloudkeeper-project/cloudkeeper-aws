@@ -14,8 +14,7 @@ module Cloudkeeper
 
           it 'downloads correct file' do
             data = []
-            described_class.download(uri) \
-              { |segment| data << segment }
+            described_class.download(uri) { |segment| data << segment }
             expect(data.join).to eq(stub_data)
           end
         end
@@ -30,8 +29,7 @@ module Cloudkeeper
 
             it 'raises error' do
               expect do
-                described_class.download(uri) \
-                  { |segment| data << segment }
+                described_class.download(uri) { |segment| data << segment }
               end.to raise_error(Cloudkeeper::Aws::Errors::ImageDownloadError)
             end
           end
@@ -47,8 +45,7 @@ module Cloudkeeper
 
             it 'downloads correct file' do
               data = []
-              described_class.download(uri) \
-                { |segment| data << segment }
+              described_class.download(uri) { |segment| data << segment }
               expect(data.join).to eq(stub_data)
             end
           end
@@ -61,8 +58,7 @@ module Cloudkeeper
 
           it 'raises error' do
             expect do
-              described_class.download(uri) \
-                { |segment| data << segment }
+              described_class.download(uri) { |segment| data << segment }
             end.to raise_error(Cloudkeeper::Aws::Errors::ImageDownloadError)
           end
         end
