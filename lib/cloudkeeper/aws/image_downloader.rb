@@ -20,6 +20,8 @@ module Cloudkeeper
             handle_response(resp, limit, &block)
           end
         end
+      rescue URI::InvalidURIError => e
+        raise Cloudkeeper::Aws::Errors::ImageDownloadError, e.message
       end
 
       # Method used for handeling responses from download requests.
