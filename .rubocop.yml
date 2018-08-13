@@ -8,8 +8,34 @@ Metrics/BlockLength:
         - '*.gemspec'
 
 Metrics/ModuleLength:
-    Exclude:
-        - 'spec/**/*.rb'
+  Exclude:
+    - 'spec/**/*.rb'
 
 Metrics/LineLength:
-    Max: 135
+  Max: 135
+
+RSpec/InstanceVariable:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/ParameterLists:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'spec/spec_helper.rb'
+    - 'lib/cloudkeeper/aws/proto_helper.rb'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'lib/cloudkeeper/aws/proto_helper.rb'
+
+Naming/UncommunicativeMethodParamName:
+  Exclude:
+    - 'spec/**/*.rb'
+
+AllCops:
+  Exclude:
+    - 'lib/cloudkeeper_grpc/**/*.rb'
+    - 'lib/cloudkeeper_grpc.rb'

@@ -37,6 +37,15 @@ module Cloudkeeper
         obj.upload_stream(&block)
       end
 
+      def delete_data(file_name)
+        obj = bucket.object(file_name)
+        unless obj.exists?
+          raise Cloudkeeper::Aws::Errors::Backend::BackendError,
+                "File #{file_name} does not exist"
+        end
+        obj.delete
+      end
+
       # Creates import image task on AWS cloud. This task needs to be
       # polled for. See {#poll_import_task}.
       #
