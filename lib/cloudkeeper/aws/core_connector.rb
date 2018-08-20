@@ -43,13 +43,15 @@ module Cloudkeeper
 
       def update_appliance(appliance, _call)
         handle_aws do
-          if appliance.image.nil?
-            tag_descriptors = cloud.search_tags(FilterHelper.appliance(appliance.identifier))
-            cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), tag_descriptors.first.resource_id)
-          else
-            remove_appliance(appliance, nil)
-            add_appliance(appliance, nil)
-          end
+          remove_appliance(appliance, nil)
+          add_appliance(appliance, nil)
+        end
+      end
+
+      def update_appliance_metadata(appliance, _call)
+        handle_aws do
+          tag_descriptors = cloud.search_tags(FilterHelper.appliance(appliance.identifier))
+          cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), tag_descriptors.first.resource_id)
         end
       end
 
@@ -58,7 +60,7 @@ module Cloudkeeper
           tag_descriptors = cloud.search_tags(FilterHelper.appliance(appliance.identifier))
           unless tag_descriptors.size == 1
             raise GRPC::BadStatus.new(CloudkeeperGrpc::Constants::STATUS_CODE_INVALID_RESOURCE_STATE,
-                                      'Appliance duplication or not found')
+                                      'Wrong number of appliances fetched')
           end
           cloud.deregister_image(tag_descriptors.first.resource_id)
         end
