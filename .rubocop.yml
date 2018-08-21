@@ -1,15 +1,43 @@
 require: rubocop-rspec
 
 Metrics/BlockLength:
-    Exclude:
-        - 'Rakefile'
-        - '**/*.rake'
-        - 'spec/**/*.rb'
-        - '*.gemspec'
+  Exclude:
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'spec/**/*.rb'
+    - '*.gemspec'
 
 Metrics/ModuleLength:
-    Exclude:
-        - 'spec/**/*.rb'
+  Exclude:
+    - 'spec/**/*.rb'
 
 Metrics/LineLength:
-    Max: 135
+  Max: 135
+
+RSpec/InstanceVariable:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/ParameterLists:
+  Exclude:
+    - 'spec/spec_helper.rb'
+
+Metrics/MethodLength:
+  Max: 15
+  Exclude:
+    - 'spec/spec_helper.rb'
+    - 'lib/cloudkeeper/aws/proto_helper.rb'
+
+Metrics/AbcSize:
+  Max: 20
+  Exclude:
+    - 'lib/cloudkeeper/aws/proto_helper.rb'
+
+Naming/UncommunicativeMethodParamName:
+  Exclude:
+    - 'spec/spec_helper.rb'
+
+AllCops:
+  Exclude:
+    - 'lib/cloudkeeper_grpc/**/*.rb'
+    - 'lib/cloudkeeper_grpc.rb'

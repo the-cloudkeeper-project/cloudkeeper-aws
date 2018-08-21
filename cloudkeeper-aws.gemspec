@@ -15,6 +15,15 @@ Gem::Specification.new do |spec|
 
   spec.files = `git ls-files -z`.split("\x0").reject \
     { |f| f.match(%r{^(test|spec|features)/}) }
+  gem_dir = __dir__ + '/'
+  `git submodule --quiet foreach --recursive pwd`.split($OUTPUT_RECORD_SEPARATOR).each do |submodule_path|
+    Dir.chdir(submodule_path) do
+      submodule_relative_path = submodule_path.sub gem_dir, ''
+      `git ls-files`.split($OUTPUT_RECORD_SEPARATOR).each do |filename|
+        spec.files << "#{submodule_relative_path}/#{filename}"
+      end
+    end
+  end
   spec.executables = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
@@ -25,6 +34,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop-rspec', '~> 1.27'
   spec.add_development_dependency 'webmock', '~> 3.4'
 
+  spec.add_runtime_dependency 'activesupport', '~> 5.2'
   spec.add_runtime_dependency 'aws-sdk', '~> 3.0'
   spec.add_runtime_dependency 'grpc', '~> 1.10'
   spec.add_runtime_dependency 'settingslogic', '~> 2.0'
