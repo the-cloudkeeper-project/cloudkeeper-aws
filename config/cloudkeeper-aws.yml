@@ -1,5 +1,6 @@
 polling_timeout: 3600
 polling_interval: 2
-bucket_name: cloudkeeper
+bucket_name: cloudkeeper-aws
+identifier: cloudkeeper-aws # Instance identifier
 aws:
     region: eu-central-1

@@ -10,6 +10,7 @@ module Cloudkeeper
 
       SUCCESSFUL_STATUS = %w[completed].freeze
       UNSUCCESSFUL_STATUS = %w[deleted].freeze
+      CLOUDKEEPER_IDENTIFIER_KEY = 'cloudkeeper_identifier'.freeze
 
       # Constructs Cloud object that can communicate with AWS cloud.
       #
@@ -125,6 +126,8 @@ module Cloudkeeper
       #   to specific AMI. Tag consists of key and value symbols
       # @param image_id [String] id of specific AMI
       def set_tags(tags, image_id)
+        tags << { key: CLOUDKEEPER_IDENTIFIER_KEY,
+                  value: Cloudkeeper::Aws::Settings.identifier }
         ec2.create_tags(
           resources: [image_id],
           tags: tags
@@ -140,9 +143,13 @@ module Cloudkeeper
       # @return [Array<Types::TagDescriptor>] contains `:key`, `:value`
       #   and `:resource_id`
       def search_tags(tags_filters)
+        tags_filters.concat([{ name: CLOUDKEEPER_IDENTIFIER_KEY,
+                               values: [Cloudkeeper::Aws::Settings.identifier] },
+                             { name: 'resource-type',
+                               values: ['image'] }])
         ec2.describe_tags(
           filters: tags_filters
-        ).tags.keep_if { |resource| resource.resource_type == 'image' }
+        ).tags
       end
     end
   end
