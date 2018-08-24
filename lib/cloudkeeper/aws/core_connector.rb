@@ -40,9 +40,13 @@ module Cloudkeeper
         end
       end
 
-      def pre_action(_empty, _call); end
+      def pre_action(_empty, _call)
+        Google::Protobuf::Empty.new
+      end
 
-      def post_action(_empty, _call); end
+      def post_action(_empty, _call)
+        Google::Protobuf::Empty.new
+      end
 
       def add_appliance(appliance, _call)
         handle_error do
@@ -51,6 +55,7 @@ module Cloudkeeper
           image_id = cloud.poll_import_task(cloud.start_import_image(appliance))
           cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), image_id)
           cloud.delete_data(appliance.identifier)
+          Google::Protobuf::Empty.new
         end
       end
 
@@ -58,6 +63,7 @@ module Cloudkeeper
         handle_error do
           remove_appliance(appliance, nil)
           add_appliance(appliance, nil)
+          Google::Protobuf::Empty.new
         end
       end
 
@@ -65,6 +71,7 @@ module Cloudkeeper
         handle_error do
           image = cloud.find_appliance(appliance.identifier)
           cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), image.image_id)
+          Google::Protobuf::Empty.new
         end
       end
 
@@ -72,6 +79,7 @@ module Cloudkeeper
         handle_error do
           image = cloud.find_appliance(appliance.identifier)
           cloud.deregister_image(image.image_id)
+          Google::Protobuf::Empty.new
         end
       end
 
@@ -79,22 +87,24 @@ module Cloudkeeper
         handle_error do
           images = cloud.search_images(FilterHelper.image_list(image_list_identifier))
           images.each { |image| cloud.deregister_image(image.image_id) }
+          Google::Protobuf::Empty.new
         end
       end
 
       def image_lists(_empty, _call)
         handle_error do
           images = cloud.search_images(FilterHelper.all_image_lists)
-          images.map do |image|
+          image_list_identifiers = images.map do |image|
             image.tags.find { |tag| tag['key'] == FilterHelper::TAG_APPLIANCE_IMAGE_LIST_IDENTIFIER }['value']
-          end.uniq
+          end
+          image_list_identifiers.uniq.map { |ili| CloudkeeperGrpc::ImageListIdentifier.new(image_list_identifier: ili) }.each
         end
       end
 
       def appliances(image_list_identifier, _call)
         handle_error do
           images = cloud.search_images(FilterHelper.image_list(image_list_identifier))
-          images.map { |image| ProtoHelper.appliance_from_tags(image.tags) }
+          images.map { |image| ProtoHelper.appliance_from_tags(image.tags) }.each
         end
       end
     end
