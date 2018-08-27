@@ -3,3 +3,4 @@ polling_interval: 2
 bucket_name: cloudkeeper
 aws:
     region: eu-central-1
+identifier: cloudkeeper-major
