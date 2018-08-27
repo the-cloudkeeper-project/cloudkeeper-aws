@@ -58,7 +58,7 @@ module Cloudkeeper
 
           it 'does not upload image' do
             expect { core_connector.add_appliance(appliance, nil) }.to \
-              raise_error(Cloudkeeper::Aws::Errors::ImageDownloadError)
+              raise_error(GRPC::BadStatus)
           end
         end
 
