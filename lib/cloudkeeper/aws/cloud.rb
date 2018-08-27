@@ -137,9 +137,12 @@ module Cloudkeeper
 
       def find_appliance(identifier)
         images = ec2.describe_images(filters: FilterHelper.appliance(identifier)).images
-        unless images.size == 1
-          raise Cloudkeeper::Aws::Errors::Backend::BackendError, \
-                'Wrong number of appliances fetched'
+        if images.empty?
+          raise Cloudkeeper::Aws::Errors::Backend::ApplianceNotFoundError,
+                'Appliance not found'
+        elsif images.size > 1
+          raise Cloudkeeper::Aws::Errors::Backend::MultipleAppliancesFoundError,
+                'Multiple appliances with same identifier exist in AWS'
         end
         images.first
       end

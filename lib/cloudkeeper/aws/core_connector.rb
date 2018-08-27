@@ -50,15 +50,27 @@ module Cloudkeeper
 
       def update_appliance_metadata(appliance, _call)
         handle_aws do
-          image = cloud.find_appliance(appliance.identifier)
-          cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), image.image_id)
+          begin
+            image = cloud.find_appliance(appliance.identifier)
+            cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), image.image_id)
+          rescue Cloudkeeper::Aws::Errors::Backend::ApplianceNotFoundError => e
+            raise GRPC::BadStatus.new(CloudkeeperGrpc::Constants::STATUS_CODE_APPLIANCE_NOT_FOUND, e.message)
+          rescue Cloudkeeper::Aws::Errors::Backend::MultipleAppliancesFoundError => e
+            raise GRPC::BadStatus.new(CloudkeeperGrpc::Constants::STATUS_CODE_INVALID_RESOURCE_STATE, e.message)
+          end
         end
       end
 
       def remove_appliance(appliance, _call)
         handle_aws do
-          image = cloud.find_appliance(appliance.identifier)
-          cloud.deregister_image(image.image_id)
+          begin
+            image = cloud.find_appliance(appliance.identifier)
+            cloud.deregister_image(image.image_id)
+          rescue Cloudkeeper::Aws::Errors::Backend::ApplianceNotFoundError => e
+            raise GRPC::BadStatus.new(CloudkeeperGrpc::Constants::STATUS_CODE_APPLIANCE_NOT_FOUND, e.message)
+          rescue Cloudkeeper::Aws::Errors::Backend::MultipleAppliancesFoundError => e
+            raise GRPC::BadStatus.new(CloudkeeperGrpc::Constants::STATUS_CODE_INVALID_RESOURCE_STATE, e.message)
+          end
         end
       end
 
