@@ -50,41 +50,38 @@ module Cloudkeeper
 
       def update_appliance_metadata(appliance, _call)
         handle_aws do
-          tag_descriptors = cloud.search_tags(FilterHelper.appliance(appliance.identifier))
-          cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), tag_descriptors.first.resource_id)
+          image = cloud.find_appliance(appliance.identifier)
+          cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), image.image_id)
         end
       end
 
       def remove_appliance(appliance, _call)
         handle_aws do
-          tag_descriptors = cloud.search_tags(FilterHelper.appliance(appliance.identifier))
-          unless tag_descriptors.size == 1
-            raise GRPC::BadStatus.new(CloudkeeperGrpc::Constants::STATUS_CODE_INVALID_RESOURCE_STATE,
-                                      'Wrong number of appliances fetched')
-          end
-          cloud.deregister_image(tag_descriptors.first.resource_id)
+          image = cloud.find_appliance(appliance.identifier)
+          cloud.deregister_image(image.image_id)
         end
       end
 
       def remove_image_list(image_list_identifier, _call)
         handle_aws do
-          tag_descriptors = cloud.search_tags(FilterHelper.image_list(image_list_identifier))
-          tag_descriptors.each { |td| cloud.deregister_image(td.resource_id) }
+          images = cloud.search_images(FilterHelper.image_list(image_list_identifier))
+          images.each { |image| cloud.deregister_image(image.image_id) }
         end
       end
 
       def image_lists(_empty, _call)
         handle_aws do
-          tag_descriptors = cloud.search_tags(FilterHelper.all_image_lists)
-          tag_descriptors.map(&:value).uniq
+          images = cloud.search_images(FilterHelper.all_image_lists)
+          images.map do |image|
+            image.tags.find { |tag| tag['key'] == FilterHelper::TAG_APPLIANCE_IMAGE_LIST_IDENTIFIER }['value']
+          end.uniq
         end
       end
 
       def appliances(image_list_identifier, _call)
         handle_aws do
-          tag_descriptors = cloud.search_tags(FilterHelper.image_list(image_list_identifier))
-          tag_descriptors.map \
-            { |td| ProtoHelper.appliance_from_tags(cloud.search_tags(FilterHelper.all_tags_for(td.resource_id))) }
+          images = cloud.search_images(FilterHelper.image_list(image_list_identifier))
+          images.map { |image| ProtoHelper.appliance_from_tags(image.tags) }
         end
       end
     end

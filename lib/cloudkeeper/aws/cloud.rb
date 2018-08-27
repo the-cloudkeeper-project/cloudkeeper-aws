@@ -131,18 +131,17 @@ module Cloudkeeper
         )
       end
 
-      # Searches in AWS for images with specific tags. Returns only
-      # image resources.
-      #
-      # @note This method can be billed by AWS
-      # @param tags_filter [Array<Hash{Symbol => String, Array<String>}>] how to
-      #   filter resources. Contains `:name` and `:values`.
-      # @return [Array<Types::TagDescriptor>] contains `:key`, `:value`
-      #   and `:resource_id`
-      def search_tags(tags_filters)
-        ec2.describe_tags(
-          filters: tags_filters
-        ).tags.keep_if { |resource| resource.resource_type == 'image' }
+      def search_images(filters)
+        ec2.describe_images(filters: filters).images
+      end
+
+      def find_appliance(identifier)
+        images = ec2.describe_images(filters: FilterHelper.appliance(identifier)).images
+        unless images.size == 1
+          raise Cloudkeeper::Aws::Errors::Backend::BackendError, \
+                'Wrong number of appliances fetched'
+        end
+        images.first
       end
     end
   end
