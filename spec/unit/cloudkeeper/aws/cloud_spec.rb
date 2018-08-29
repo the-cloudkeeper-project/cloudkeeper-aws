@@ -96,11 +96,11 @@ module Cloudkeeper
 
         context 'with timeout' do
           before do
-            Cloudkeeper::Aws::Settings['polling_timeout'] = 1
+            Cloudkeeper::Aws::Settings['polling-timeout'] = 1
           end
 
           after do
-            Cloudkeeper::Aws::Settings['polling_timeout'] = 3600
+            Cloudkeeper::Aws::Settings['polling-timeout'] = 3600
           end
 
           it 'raises exception' do
