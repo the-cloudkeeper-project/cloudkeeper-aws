@@ -50,11 +50,14 @@ module Cloudkeeper
 
       def add_appliance(appliance, _call)
         handle_error do
-          upload_appliance(appliance)
+          begin
+            upload_appliance(appliance)
 
-          image_id = cloud.poll_import_task(cloud.start_import_image(appliance))
-          cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), image_id)
-          cloud.delete_data(appliance.identifier)
+            image_id = cloud.poll_import_task(cloud.start_import_image(appliance))
+            cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), image_id)
+          ensure
+            cloud.delete_data(appliance.identifier)
+          end
           Google::Protobuf::Empty.new
         end
       end
