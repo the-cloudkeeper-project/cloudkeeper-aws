@@ -15,10 +15,10 @@ module Cloudkeeper
       #
       # @note This method can be billed by AWS
       def initialize(s3service: nil, ec2service: nil)
-        region = Cloudkeeper::Aws::Settings.aws.region
-        @s3 = s3service || ::Aws::S3::Resource.new(region: region)
-        @ec2 = ec2service || ::Aws::EC2::Client.new(region: region)
-        @bucket = s3.bucket(Cloudkeeper::Aws::Settings.bucket_name)
+        ::Aws.config.update(Cloudkeeper::Aws::Settings['aws'].deep_symbolize_keys)
+        @s3 = s3service || ::Aws::S3::Resource.new
+        @ec2 = ec2service || ::Aws::EC2::Client.new
+        @bucket = s3.bucket(Cloudkeeper::Aws::Settings['bucket-name'])
         bucket.create unless bucket.exists?
       end
 
@@ -95,14 +95,14 @@ module Cloudkeeper
       # Simple method used for calling block in intervals
       def sleep_loop
         loop do
-          sleep Cloudkeeper::Aws::Settings.polling_interval
+          sleep Cloudkeeper::Aws::Settings['polling-interval']
           yield
         end
       end
 
       # Simple method used for handling timeout
       def timeout
-        Timeout.timeout(Cloudkeeper::Aws::Settings.polling_timeout,
+        Timeout.timeout(Cloudkeeper::Aws::Settings['polling-timeout'],
                         Cloudkeeper::Aws::Errors::Backend::TimeoutError) do
           yield
         end

@@ -1,6 +1,16 @@
-polling_timeout: 3600
-polling_interval: 2
-bucket_name: cloudkeeper
+polling-timeout: 3600
+polling-interval: 2
+bucket-name: cloudkeeper-aws
+listen-address: 127.0.0.1:50051 # IP address gRPC server will listen on
+authentication: false # core (client) <-> backend (server) authentication (certificate, key and core-certificate options)
+certificate: /etc/grid-security/hostcert.pem # Backend's host certificate
+key: /etc/grid-security/hostkey.pem # Backend's host key
+identifier: cloudkeeper-aws # Instance identifier
+core:
+  certificate: /etc/grid-security/corecert.pem # Core's certificate
+logging:
+  level: ERROR # Logging level
+  file: /var/log/cloudkeeper/cloudkeeper-aws.log # File to write log to. To turn off file logging leave this field empty.
+debug: false # Debug mode
 aws:
     region: eu-central-1
-identifier: cloudkeeper-major
