@@ -34,7 +34,7 @@ module Cloudkeeper
 
       def upload_appliance(appliance)
         cloud.upload_data(appliance.identifier) do |write_stream|
-          ImageDownloader.download(appliance.image.uri) do |image_segment|
+          ImageDownloader.download(appliance.image.uri, appliance.image.username, appliance.image.password) do |image_segment|
             write_stream << image_segment
           end
         end
