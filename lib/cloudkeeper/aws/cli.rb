@@ -62,6 +62,10 @@ module Cloudkeeper
                     default: Cloudkeeper::Aws::Settings['core']['certificate'],
                     type: :string,
                     desc: "Core's certificate"
+      method_option :progress,
+                    default: Cloudkeeper::Aws::Settings['progress'],
+                    type: :boolean,
+                    desc: 'Print progress for each import image task'
 
       desc 'sync', 'Runs synchronization process'
       def sync

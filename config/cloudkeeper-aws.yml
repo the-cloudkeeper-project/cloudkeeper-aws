@@ -11,6 +11,7 @@ core:
 logging:
   level: ERROR # Logging level
   file: /var/log/cloudkeeper/cloudkeeper-aws.log # File to write log to. To turn off file logging leave this field empty.
+progress: false
 debug: false # Debug mode
 aws:
     region: eu-central-1

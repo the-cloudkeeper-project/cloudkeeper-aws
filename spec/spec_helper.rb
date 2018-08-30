@@ -12,7 +12,8 @@ end
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
-Yell.new :file, '/dev/null', name: Object, level: 'error', format: Yell::DefaultFormat
+# Yell.new :file, '/dev/null', name: Object, level: 'error', format: Yell::DefaultFormat
+Yell.new :stdout, name: Object, level: 'debug', format: Yell::DefaultFormat
 Object.send :include, Yell::Loggable
 
 CloudkeeperGrpc::Image = Struct.new(:mode,
