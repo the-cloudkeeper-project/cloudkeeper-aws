@@ -1,6 +1,7 @@
 require 'cloudkeeper/aws'
 require 'webmock/rspec'
 require 'cloudkeeper_grpc'
+require 'yell'
 
 RSpec.configure do |c|
   c.color = true
@@ -10,6 +11,9 @@ RSpec.configure do |c|
 end
 
 WebMock.disable_net_connect!(allow_localhost: true)
+
+Yell.new :file, '/dev/null', name: Object, level: 'error', format: Yell::DefaultFormat
+Object.send :include, Yell::Loggable
 
 CloudkeeperGrpc::Image = Struct.new(:mode,
                                     :location,

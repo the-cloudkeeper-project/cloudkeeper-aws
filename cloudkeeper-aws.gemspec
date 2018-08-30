@@ -39,4 +39,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'grpc', '~> 1.10'
   spec.add_runtime_dependency 'settingslogic', '~> 2.0'
   spec.add_runtime_dependency 'thor', '~> 0.20'
+  spec.add_runtime_dependency 'yell', '~> 2.0'
 end
