@@ -39,11 +39,7 @@ module Cloudkeeper
 
       def delete_data(file_name)
         obj = bucket.object(file_name)
-        unless obj.exists?
-          raise Cloudkeeper::Aws::Errors::Backend::BackendError,
-                "File #{file_name} does not exist"
-        end
-        obj.delete
+        obj.delete if obj.exists?
       end
 
       # Creates import image task on AWS cloud. This task needs to be
@@ -85,8 +81,10 @@ module Cloudkeeper
         timeout do
           sleep_loop do
             import_task = ec2.describe_import_image_tasks(import_task_ids: [import_id]).import_image_tasks.first
-            raise Cloudkeeper::Aws::Errors::Backend::ImageImportError, "Import failed with status #{import_task.status}" \
-                  if UNSUCCESSFUL_STATUS.include?(import_task.status)
+            if UNSUCCESSFUL_STATUS.include?(import_task.status)
+              raise Cloudkeeper::Aws::Errors::Backend::ImageImportError,
+                    "Import failed with status #{import_task.status} and message: #{import_task.status_message}" \
+            end
             return import_task.image_id if SUCCESSFUL_STATUS.include?(import_task.status)
           end
         end
