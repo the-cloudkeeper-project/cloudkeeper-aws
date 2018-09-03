@@ -4,52 +4,57 @@ module Cloudkeeper
     #   used for conversion from one format to another
     class ProtoHelper
       class << self
-        APPLIANCE_VALUES = %w[identifier title
-                              description mpuri
-                              group ram
-                              core version
-                              architecture operating_system
-                              vo expiration_date
-                              image_list_identifier base_mpuri
-                              appid digest].freeze
+        APPLIANCE_PREFIX = 'cloudkeeper_appliance_'.freeze
+        IMAGE_PREFIX = 'cloudkeeper_image_'.freeze
 
-        IMAGE_VALUES = %w[mode location format uri checksum size
-                          username password digest].freeze
-
-        APPLIANCE_SUFFIX = 'cloudkeeper_appliance_'.freeze
-        IMAGE_SUFFIX = 'cloudkeeper_image_'.freeze
-
-        def filter_tags(tags, suffix)
-          tags.select { |tag| tag[:key].include?(suffix) }
+        def filter_tags(tags, prefix)
+          tags.select { |tag| tag[:key].include?(prefix) }
         end
 
-        def remove_suffix(tags, suffix)
-          tags.map { |tag| { tag[:key].sub(suffix, '').to_sym => tag[:value] } }.reduce(&:merge)
+        def remove_prefix(tags, prefix)
+          tags.map { |tag| { tag[:key].sub(prefix, '').to_sym => tag[:value] } }.reduce(&:merge)
         end
 
-        def prepare_tags(tags, suffix)
-          remove_suffix(filter_tags(tags, suffix), suffix)
+        def prepare_tags(tags, prefix)
+          remove_prefix(filter_tags(tags, prefix), prefix)
         end
 
         def appliance_to_tags(appliance)
-          tags = APPLIANCE_VALUES.map { |v| { key: "#{APPLIANCE_SUFFIX}#{v}", value: appliance.send(v) } }
-          tags += image_to_tags(appliance.image) unless appliance.image.nil?
-          tags
+          appliance_hash = appliance.to_hash
+          image = appliance_hash.delete(:image)
+          tags = appliance_hash.map { |k, v| { key: "#{APPLIANCE_PREFIX}#{k}", value: v.to_s } }
+          tags += image_to_tags(image) if image
+          tags << { key: Cloudkeeper::Aws::FilterHelper::TAG_CLOUDKEEPER_IDENTIFIER,
+                    value: Cloudkeeper::Aws::Settings['identifier'] }
         end
 
         def appliance_from_tags(tags)
-          appliance = prepare_tags(tags, APPLIANCE_SUFFIX)
+          appliance = appliance_prepare_values(prepare_tags(tags, APPLIANCE_PREFIX))
           appliance[:image] = image_from_tags(tags)
           CloudkeeperGrpc::Appliance.new(appliance)
         end
 
+        def appliance_prepare_values(appliance)
+          appliance[:ram] = appliance[:ram].to_i
+          appliance[:core] = appliance[:core].to_i
+          appliance[:expiration_date] = appliance[:expiration_date].to_i
+          appliance
+        end
+
         def image_to_tags(image)
-          IMAGE_VALUES.map { |v| { key: "#{IMAGE_SUFFIX}#{v}", value: image.send(v) } }
+          image.to_hash.map { |k, v| { key: "#{IMAGE_PREFIX}#{k}", value: v.to_s } }
         end
 
         def image_from_tags(tags)
-          image = prepare_tags(tags, IMAGE_SUFFIX)
+          image = image_prepare_values(prepare_tags(tags, IMAGE_PREFIX))
           CloudkeeperGrpc::Image.new(image)
+        end
+
+        def image_prepare_values(image)
+          image[:size] = image[:size].to_i
+          image[:mode] = image[:mode].upcase.to_sym
+          image[:format] = image[:format].upcase.to_sym
+          image
         end
       end
     end

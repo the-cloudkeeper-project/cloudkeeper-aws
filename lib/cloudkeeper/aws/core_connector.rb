@@ -29,8 +29,8 @@ module Cloudkeeper
       rescue Cloudkeeper::Aws::Errors::StandardError => e
         logger.error { "Error #{e.class} with message #{e.message}" }
         raise GRPC::BadStatus.new(ERRORS[e.class], e.message)
-      rescue ::Aws::Errors::ServiceError => e
-        logger.error { "AWS error with message #{e.message}" }
+      rescue ::StandardError => e
+        logger.error { "Standard error #{e.class} with message #{e.message}" }
         raise GRPC::BadStatus.new(CloudkeeperGrpc::Constants::STATUS_CODE_UNKNOWN, e.message)
       end
 
@@ -98,7 +98,7 @@ module Cloudkeeper
       def remove_image_list(image_list_identifier, _call)
         logger.debug { "GRPC remove image list with id: #{image_list_identifier.image_list_identifier}" }
         handle_error do
-          images = cloud.search_images(FilterHelper.image_list(image_list_identifier))
+          images = cloud.search_images(FilterHelper.image_list(image_list_identifier.image_list_identifier))
           images.each { |image| cloud.deregister_image(image.image_id) }
           Google::Protobuf::Empty.new
         end
@@ -118,7 +118,7 @@ module Cloudkeeper
       def appliances(image_list_identifier, _call)
         logger.debug { "GRPC appliances for: #{image_list_identifier.image_list_identifier}" }
         handle_error do
-          images = cloud.search_images(FilterHelper.image_list(image_list_identifier))
+          images = cloud.search_images(FilterHelper.image_list(image_list_identifier.image_list_identifier))
           images.map { |image| ProtoHelper.appliance_from_tags(image.tags) }.each
         end
       end

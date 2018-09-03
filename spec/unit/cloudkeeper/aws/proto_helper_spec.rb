@@ -5,9 +5,9 @@ module Cloudkeeper
     describe ProtoHelper do
       let(:image) { CloudkeeperGrpc::Image.new }
       let(:image_tags) do
-        [{ key: 'cloudkeeper_image_mode', value: 'local' },
+        [{ key: 'cloudkeeper_image_mode', value: 'LOCAL' },
          { key: 'cloudkeeper_image_location', value: 'http://localhost' },
-         { key: 'cloudkeeper_image_format', value: 'ova' },
+         { key: 'cloudkeeper_image_format', value: 'OVA' },
          { key: 'cloudkeeper_image_uri', value: 'http://remotehost' },
          { key: 'cloudkeeper_image_checksum', value: 'a09q589' },
          { key: 'cloudkeeper_image_size', value: '581816320' },
@@ -29,16 +29,17 @@ module Cloudkeeper
          { key: 'cloudkeeper_appliance_architecture', value: 'x86_64' },
          { key: 'cloudkeeper_appliance_operating_system', value: 'MSDOS' },
          { key: 'cloudkeeper_appliance_vo', value: 'test.eu' },
-         { key: 'cloudkeeper_appliance_expiration_date', value: '2499-12-31T22:00:00Z' },
+         { key: 'cloudkeeper_appliance_expiration_date', value: '69' },
          { key: 'cloudkeeper_appliance_image_list_identifier', value: 'bac-321' },
          { key: 'cloudkeeper_appliance_base_mpuri', value: 'http://remotehost/base_mpuri' },
          { key: 'cloudkeeper_appliance_appid', value: '15' },
-         { key: 'cloudkeeper_appliance_digest', value: 'c87q420' }] + image_tags
+         { key: 'cloudkeeper_appliance_digest', value: 'c87q420' },
+         { key: 'cloudkeeper_identifier', value: 'cloudkeeper-aws' }] + image_tags
       end
 
       describe '#appliance_to_tags' do
         it 'creates correct tags' do
-          expect(described_class.appliance_to_tags(appliance)).to eq(appliance_tags)
+          expect(described_class.appliance_to_tags(appliance)).to match_array(appliance_tags)
         end
       end
 
@@ -50,7 +51,7 @@ module Cloudkeeper
 
       describe '#image_to_tags' do
         it 'creates correct tags' do
-          expect(described_class.image_to_tags(image)).to eq(image_tags)
+          expect(described_class.image_to_tags(image)).to match_array(image_tags)
         end
       end
 
