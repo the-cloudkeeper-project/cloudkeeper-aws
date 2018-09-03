@@ -41,11 +41,7 @@ module Cloudkeeper
       def delete_data(file_name)
         logger.debug { "Deleting file: #{file_name}" }
         obj = bucket.object(file_name)
-        if obj.exists? then
-          obj.delete
-        else
-          logger.info "File does not exist: #{file_name}"
-        end
+        obj.exists? ? obj.delete : logger.info("File does not exist: #{file_name}")
       end
 
       # Creates import image task on AWS cloud. This task needs to be
@@ -89,7 +85,7 @@ module Cloudkeeper
         timeout do
           sleep_loop do
             import_task = ec2.describe_import_image_tasks(import_task_ids: [import_id]).import_image_tasks.first
-            logger.info "Import ##{import_id} [#{import_task.status}] with progress #{import_task.progress}%" if Cloudkeeper::Aws::Settings['progress']
+            print_progress(import_task)
             if UNSUCCESSFUL_STATUS.include?(import_task.status)
               raise Cloudkeeper::Aws::Errors::Backend::ImageImportError,
                     "Import failed with status #{import_task.status} and message: #{import_task.status_message}"
@@ -97,6 +93,11 @@ module Cloudkeeper
             return import_task.image_id if SUCCESSFUL_STATUS.include?(import_task.status)
           end
         end
+      end
+
+      def print_progress(import_task)
+        logger.info "Import ##{import_task.import_task_id} [#{import_task.status}] with progress #{import_task.progress}%" \
+          if Cloudkeeper::Aws::Settings['progress']
       end
 
       # Simple method used for calling block in intervals
@@ -120,10 +121,8 @@ module Cloudkeeper
       # @note This method can be billed by AWS
       # @param image_id [String] id of specific AMI
       def deregister_image(image_id)
-        logger.debug { "Deregistering image ##{image_id}"}
-        ec2.deregister_image(
-          image_id: image_id
-        )
+        logger.debug { "Deregistering image ##{image_id}" }
+        ec2.deregister_image(image_id: image_id)
       end
 
       # Sets tags to specific AMI.
@@ -134,10 +133,7 @@ module Cloudkeeper
       # @param image_id [String] id of specific AMI
       def set_tags(tags, image_id)
         logger.debug { "Setting tags for image ##{image_id}: #{tags}" }
-        ec2.create_tags(
-          resources: [image_id],
-          tags: tags
-        )
+        ec2.create_tags(resources: [image_id], tags: tags)
       end
 
       def search_images(filters)
@@ -148,10 +144,8 @@ module Cloudkeeper
       def find_appliance(identifier)
         logger.debug { "Fetching appliance with identifier #{identifier}" }
         images = ec2.describe_images(filters: FilterHelper.appliance(identifier)).images
-        if images.empty?
-          raise Cloudkeeper::Aws::Errors::Backend::ApplianceNotFoundError,
-                'Appliance not found'
-        elsif images.size > 1
+        raise Cloudkeeper::Aws::Errors::Backend::ApplianceNotFoundError, 'Appliance not found' if images.empty?
+        if images.size > 1
           raise Cloudkeeper::Aws::Errors::Backend::MultipleAppliancesFoundError,
                 'Multiple appliances with same identifier exist in AWS'
         end

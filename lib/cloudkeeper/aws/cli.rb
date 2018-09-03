@@ -71,13 +71,7 @@ module Cloudkeeper
       def sync
         initialize_config
         initialize_logger
-        grpc_server = GRPC::RpcServer.new
-        grpc_server.add_http2_port Cloudkeeper::Aws::Settings[:'listen-address'], credentials
-        grpc_server.handle Cloudkeeper::Aws::CoreConnector.new(Cloudkeeper::Aws::Cloud.new)
-        grpc_server.run_till_terminated
-      rescue SignalException => ex
-        raise ex unless SIGNALS.include? ex.signo
-        grpc_server.stop
+        initialize_grpc
       rescue Cloudkeeper::Aws::Errors::InvalidConfigurationError => ex
         abort ex.message
       rescue StandardError => ex
@@ -93,6 +87,16 @@ module Cloudkeeper
       default_task :sync
 
       private
+
+      def initialize_grpc
+        grpc_server = GRPC::RpcServer.new
+        grpc_server.add_http2_port Cloudkeeper::Aws::Settings[:'listen-address'], credentials
+        grpc_server.handle Cloudkeeper::Aws::CoreConnector.new(Cloudkeeper::Aws::Cloud.new)
+        grpc_server.run_till_terminated
+      rescue SignalException => ex
+        raise ex unless SIGNALS.include? ex.signo
+        grpc_server.stop
+      end
 
       def initialize_config
         aws_config = Cloudkeeper::Aws::Settings[:aws]

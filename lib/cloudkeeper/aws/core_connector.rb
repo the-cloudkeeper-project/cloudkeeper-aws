@@ -58,7 +58,6 @@ module Cloudkeeper
         handle_error do
           begin
             upload_appliance(appliance)
-
             image_id = cloud.poll_import_task(cloud.start_import_image(appliance))
             logger.debug { "Image created: #{image_id}, using tags: #{ProtoHelper.appliance_to_tags(appliance)}" }
             cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), image_id)
