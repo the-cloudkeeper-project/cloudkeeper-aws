@@ -28,7 +28,7 @@ module Cloudkeeper
           stub_request(:get, /wrongserver.com/).to_return(status: 404)
         end
 
-        let(:image) { CloudkeeperGrpc::Image.new(uri: image_uri) }
+        let(:image) { CloudkeeperGrpc::Image.new(location: image_uri) }
         let(:appliance) { CloudkeeperGrpc::Appliance.new(image: image) }
 
         context 'with valid appliance' do

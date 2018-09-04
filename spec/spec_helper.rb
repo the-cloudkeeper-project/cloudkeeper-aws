@@ -1,6 +1,7 @@
 require 'cloudkeeper/aws'
 require 'webmock/rspec'
 require 'cloudkeeper_grpc'
+require 'yell'
 
 RSpec.configure do |c|
   c.color = true
@@ -11,6 +12,9 @@ end
 
 WebMock.disable_net_connect!(allow_localhost: true)
 
+Yell.new :file, '/dev/null', name: Object, level: 'error', format: Yell::DefaultFormat
+Object.send :include, Yell::Loggable
+
 CloudkeeperGrpc::Image = Struct.new(:mode,
                                     :location,
                                     :format,
@@ -20,12 +24,12 @@ CloudkeeperGrpc::Image = Struct.new(:mode,
                                     :username,
                                     :password,
                                     :digest) do
-  def initialize(mode: 'local',
+  def initialize(mode: :LOCAL,
                  location: 'http://localhost',
-                 format: 'ova',
+                 format: :OVA,
                  uri: 'http://remotehost',
                  checksum: 'a09q589',
-                 size: '581816320',
+                 size: 581_816_320,
                  username: 'root',
                  password: 'password',
                  digest: 'b08q987'); super(mode,
@@ -37,6 +41,10 @@ CloudkeeperGrpc::Image = Struct.new(:mode,
                                            username,
                                            password,
                                            digest)
+  end
+
+  def to_hash
+    Hash[each_pair.to_a]
   end
 end
 
@@ -62,13 +70,13 @@ CloudkeeperGrpc::Appliance = Struct.new(:identifier,
                  description: 'Uber image for nothing',
                  mpuri: 'http://remotehost/mpuri',
                  group: 'General group',
-                 ram: '9000000',
-                 core: '16',
+                 ram: 9_000_000,
+                 core: 16,
                  version: '0.1',
                  architecture: 'x86_64',
                  operating_system: 'MSDOS',
                  vo: 'test.eu',
-                 expiration_date: '2499-12-31T22:00:00Z',
+                 expiration_date: 69,
                  image_list_identifier: 'bac-321',
                  base_mpuri: 'http://remotehost/base_mpuri',
                  appid: '15',
@@ -90,5 +98,9 @@ CloudkeeperGrpc::Appliance = Struct.new(:identifier,
                                     appid,
                                     digest,
                                     image)
+  end
+
+  def to_hash
+    Hash[each_pair.to_a]
   end
 end
