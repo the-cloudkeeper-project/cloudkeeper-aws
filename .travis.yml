@@ -19,4 +19,9 @@ branches:
 
 before_install: 'gem install bundler -v 1.14.0'
 
-script: 'bundle exec rake acceptance'
+jobs:
+  include:
+    - stage: specs
+      script: 'bundle exec rake spec'
+    - stage: rubocop
+      script: 'bundle exec rake rubocop'
