@@ -36,7 +36,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'webmock', '~> 3.4'
 
   spec.add_runtime_dependency 'activesupport', '~> 5.2'
-  spec.add_runtime_dependency 'aws-sdk', '~> 3.0'
+  spec.add_runtime_dependency 'aws-sdk-ec2', '~> 1.43'
+  spec.add_runtime_dependency 'aws-sdk-s3', '~> 1.17'
   spec.add_runtime_dependency 'grpc', '~> 1.10'
   spec.add_runtime_dependency 'settingslogic', '~> 2.0'
   spec.add_runtime_dependency 'thor', '~> 0.20'
