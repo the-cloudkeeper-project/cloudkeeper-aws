@@ -71,6 +71,7 @@ module Cloudkeeper
       def sync
         initialize_config
         initialize_logger
+        logger.debug { "Running with config: #{Cloudkeeper::Aws::Settings.to_hash.inspect}" }
         initialize_grpc
       rescue Cloudkeeper::Aws::Errors::InvalidConfigurationError => ex
         abort ex.message
