@@ -2,6 +2,11 @@ require 'cloudkeeper/aws'
 require 'webmock/rspec'
 require 'cloudkeeper_grpc'
 require 'yell'
+require 'simplecov'
+require 'codecov'
+
+SimpleCov.start
+SimpleCov.formatter = SimpleCov::Formatter::Codecov
 
 RSpec.configure do |c|
   c.color = true
