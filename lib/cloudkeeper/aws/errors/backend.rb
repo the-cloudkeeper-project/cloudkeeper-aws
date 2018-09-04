@@ -8,6 +8,7 @@ module Cloudkeeper
         autoload :ImageImportError, 'cloudkeeper/aws/errors/backend/image_import_error'
         autoload :ApplianceNotFoundError, 'cloudkeeper/aws/errors/backend/appliance_not_found_error'
         autoload :MultipleAppliancesFoundError, 'cloudkeeper/aws/errors/backend/multiple_appliances_found_error'
+        autoload :NoBucketPermissionError, 'cloudkeeper/aws/errors/backend/no_bucket_permission_error'
       end
     end
   end

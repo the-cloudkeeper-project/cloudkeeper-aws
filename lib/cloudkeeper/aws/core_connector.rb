@@ -11,6 +11,8 @@ module Cloudkeeper
           => CloudkeeperGrpc::Constants::STATUS_CODE_INVALID_RESOURCE_STATE,
         Cloudkeeper::Aws::Errors::Backend::ImageImportError \
           => CloudkeeperGrpc::Constants::STATUS_CODE_FAILED_APPLIANCE_TRANSFER,
+        Cloudkeeper::Aws::Errors::Backend::NoBucketPermissionError \
+          => CloudkeeperGrpc::Constants::STATUS_CODE_UNKNOWN,
         Cloudkeeper::Aws::Errors::Backend::TimeoutError \
           => CloudkeeperGrpc::Constants::STATUS_CODE_FAILED_APPLIANCE_TRANSFER,
         Cloudkeeper::Aws::Errors::Backend::BackendError \

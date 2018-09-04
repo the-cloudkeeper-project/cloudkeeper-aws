@@ -20,6 +20,13 @@ module Cloudkeeper
         @ec2 = ec2service || ::Aws::EC2::Client.new
         @bucket = s3.bucket(Cloudkeeper::Aws::Settings['bucket-name'])
         bucket.create unless bucket.exists?
+        bucket_permissions!
+      end
+
+      def bucket_permissions!
+        s3.client.head_bucket(bucket: Cloudkeeper::Aws::Settings['bucket-name'])
+      rescue ::Aws::S3::Errors::Http301Error
+        raise Cloudkeeper::Aws::Errors::Backend::NoBucketPermissionError, 'Not enough permissions to use bucket'
       end
 
       # Uploads data in block AWS file with given name
