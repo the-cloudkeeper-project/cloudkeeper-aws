@@ -35,7 +35,7 @@ module Cloudkeeper
       end
 
       def upload_appliance(appliance)
-        logger.debug { "GRPC upload appliance ##{appliance.identifier}" }
+        logger.debug { "GRPC upload appliance #{appliance.identifier}" }
         cloud.upload_data(appliance.identifier) do |write_stream|
           ImageDownloader.download(appliance.image.location, appliance.image.username, appliance.image.password) do |image_segment|
             write_stream << image_segment
@@ -54,7 +54,7 @@ module Cloudkeeper
       end
 
       def add_appliance(appliance, _call)
-        logger.debug { "GRPC add appliance ##{appliance.identifier}" }
+        logger.debug { "GRPC add appliance #{appliance.identifier}" }
         handle_error do
           begin
             upload_appliance(appliance)
@@ -69,7 +69,7 @@ module Cloudkeeper
       end
 
       def update_appliance(appliance, _call)
-        logger.debug { "GRPC update appliance ##{appliance.identifier}" }
+        logger.debug { "GRPC update appliance #{appliance.identifier}" }
         handle_error do
           remove_appliance(appliance, nil)
           add_appliance(appliance, nil)
@@ -78,7 +78,7 @@ module Cloudkeeper
       end
 
       def update_appliance_metadata(appliance, _call)
-        logger.debug { "GRPC update appliance metadata ##{appliance.identifier}" }
+        logger.debug { "GRPC update appliance metadata #{appliance.identifier}" }
         handle_error do
           image = cloud.find_appliance(appliance.identifier)
           cloud.set_tags(ProtoHelper.appliance_to_tags(appliance), image.image_id)
@@ -87,7 +87,7 @@ module Cloudkeeper
       end
 
       def remove_appliance(appliance, _call)
-        logger.debug { "GRPC remove appliance ##{appliance.identifier}" }
+        logger.debug { "GRPC remove appliance #{appliance.identifier}" }
         handle_error do
           image = cloud.find_appliance(appliance.identifier)
           cloud.deregister_image(image.image_id)
