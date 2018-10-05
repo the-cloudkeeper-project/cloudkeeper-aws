@@ -145,6 +145,7 @@ module Cloudkeeper
         logger.debug { "Fetching appliance with identifier: #{identifier}" }
         images = ec2.describe_images(filters: FilterHelper.appliance(identifier)).images
         raise Cloudkeeper::Aws::Errors::Backend::ApplianceNotFoundError, 'Appliance not found' if images.empty?
+
         if images.size > 1
           raise Cloudkeeper::Aws::Errors::Backend::MultipleAppliancesFoundError,
                 'Multiple appliances with same identifier exist in AWS'
