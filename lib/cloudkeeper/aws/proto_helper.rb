@@ -6,6 +6,7 @@ module Cloudkeeper
       class << self
         APPLIANCE_PREFIX = 'cloudkeeper_appliance_'.freeze
         IMAGE_PREFIX = 'cloudkeeper_image_'.freeze
+        EXTRA_APPLIANCE_TAGS = %i[description title].freeze
 
         def filter_tags(tags, prefix)
           tags.select { |tag| tag[:key].include?(prefix) }
@@ -19,8 +20,13 @@ module Cloudkeeper
           remove_prefix(filter_tags(tags, prefix), prefix)
         end
 
+        def shorten_extra_tags!(appliance_hash)
+          EXTRA_APPLIANCE_TAGS.each { |key| appliance_hash[key] = appliance_hash[key][0..254] }
+        end
+
         def appliance_to_tags(appliance)
           appliance_hash = appliance.to_hash
+          shorten_extra_tags!(appliance_hash)
           image = appliance_hash.delete(:image)
           tags = appliance_hash.map { |k, v| { key: "#{APPLIANCE_PREFIX}#{k}", value: v.to_s } }
           tags += image_to_tags(image) if image
