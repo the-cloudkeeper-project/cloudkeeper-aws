@@ -25,12 +25,12 @@ RSpec/InstanceVariable:
 
 Metrics/ParameterLists:
   Exclude:
-    - 'spec/spec_helper.rb'
+    - 'spec/mock_helper.rb'
 
 Metrics/MethodLength:
   Max: 15
   Exclude:
-    - 'spec/spec_helper.rb'
+    - 'spec/mock_helper.rb'
     - 'lib/cloudkeeper/aws/proto_helper.rb'
 
 Metrics/AbcSize:
@@ -40,7 +40,7 @@ Metrics/AbcSize:
 
 Naming/UncommunicativeMethodParamName:
   Exclude:
-    - 'spec/spec_helper.rb'
+    - 'spec/mock_helper.rb'
 
 AllCops:
   Exclude:

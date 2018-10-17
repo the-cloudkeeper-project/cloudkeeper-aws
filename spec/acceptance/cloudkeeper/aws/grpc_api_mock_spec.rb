@@ -1,8 +1,9 @@
 require 'spec_helper'
+require 'mock_helper'
 
 module Cloudkeeper
   module Aws
-    describe 'Cloudkeeper GRPC API' do
+    describe 'Cloudkeeper GRPC API using WebMock' do
       let(:s3) { ::Aws::S3::Resource.new(stub_responses: true) }
       let(:ec2) { ::Aws::EC2::Client.new(stub_responses: true) }
       let(:cloud) { Cloudkeeper::Aws::Cloud.new(s3service: s3, ec2service: ec2) }
@@ -23,6 +24,7 @@ module Cloudkeeper
           ec2.stub_responses(:describe_import_image_tasks,
                              import_image_tasks: [{ status: 'completed',
                                                     image_id: '123456' }])
+
           # Stubs for downloading images
           stub_request(:get, /testserver.com/).to_return(body: stub_data)
           stub_request(:get, /wrongserver.com/).to_return(status: 404)
@@ -45,10 +47,10 @@ module Cloudkeeper
                 { status_code: 200, headers: {}, body: '' }
               end
             end)
+            core_connector.add_appliance(appliance, nil)
           end
 
           it 'uploads image' do
-            core_connector.add_appliance(appliance, nil)
             expect(@body).to eq(stub_data)
           end
         end
