@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'mock_helper'
 
 module Cloudkeeper
   module Aws
