@@ -16,6 +16,7 @@ module Cloudkeeper
          { key: 'cloudkeeper_image_digest', value: 'b08q987' }]
       end
 
+      let(:appliance_long_description) { 'a' * 1024 }
       let(:appliance) { CloudkeeperGrpc::Appliance.new(image: image) }
       let(:appliance_tags) do
         [{ key: 'cloudkeeper_appliance_identifier', value: 'abc-123' },
@@ -38,8 +39,21 @@ module Cloudkeeper
       end
 
       describe '#appliance_to_tags' do
-        it 'creates correct tags' do
-          expect(described_class.appliance_to_tags(appliance)).to match_array(appliance_tags)
+        context 'with no values larger than 255 chars' do
+          it 'will not modify values' do
+            expect(described_class.appliance_to_tags(appliance)).to match_array(appliance_tags)
+          end
+        end
+
+        context 'with values larger than 255 chars' do
+          before do
+            appliance.description = appliance_long_description
+            appliance_tags.find { |tag| tag[:key] == 'cloudkeeper_appliance_description' }[:value] = appliance_long_description[0..254]
+          end
+
+          it 'will modify values' do
+            expect(described_class.appliance_to_tags(appliance)).to match_array(appliance_tags)
+          end
         end
       end
 
