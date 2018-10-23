@@ -6,6 +6,10 @@ require 'yell'
 require 'simplecov'
 require 'codecov'
 require 'aws-sdk-s3'
+require 'aws-sdk-ec2'
+
+SPEC_DIR = File.dirname(__FILE__)
+FIXTURES_DIR = File.join(SPEC_DIR, 'fixtures')
 
 SimpleCov.start
 SimpleCov.formatter = SimpleCov::Formatter::Codecov
@@ -18,7 +22,7 @@ RSpec.configure do |c|
 end
 
 VCR.configure do |config|
-  config.cassette_library_dir = 'spec/cassettes'
+  config.cassette_library_dir = File.join(FIXTURES_DIR, 'cassettes')
   config.hook_into :webmock
   config.configure_rspec_metadata!
   config.after_http_request { |req, _| req.headers['Authorization'] = '' }
