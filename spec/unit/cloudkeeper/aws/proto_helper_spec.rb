@@ -6,7 +6,7 @@ module Cloudkeeper
     describe ProtoHelper do
       let(:image) { CloudkeeperGrpc::Image.new }
       let(:image_tags) do
-        [{ key: 'cloudkeeper_image_mode', value: 'LOCAL' },
+        [{ key: 'cloudkeeper_image_mode', value: 'REMOTE' },
          { key: 'cloudkeeper_image_location', value: 'http://localhost' },
          { key: 'cloudkeeper_image_format', value: 'OVA' },
          { key: 'cloudkeeper_image_uri', value: 'http://remotehost' },

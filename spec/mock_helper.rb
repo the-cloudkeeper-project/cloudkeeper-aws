@@ -9,7 +9,7 @@ CloudkeeperGrpc::Image = Struct.new(:mode,
                                     :username,
                                     :password,
                                     :digest) do
-  def initialize(mode: :LOCAL,
+  def initialize(mode: :REMOTE,
                  location: 'http://localhost',
                  format: :OVA,
                  uri: 'http://remotehost',
