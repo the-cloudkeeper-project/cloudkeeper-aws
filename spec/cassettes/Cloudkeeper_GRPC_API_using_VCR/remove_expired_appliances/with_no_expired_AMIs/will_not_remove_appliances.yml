@@ -1,0 +1,745 @@
+---
+http_interactions:
+- request:
+    method: head
+    uri: https://cloudkeeper-aws.s3.eu-central-1.amazonaws.com/
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Content-Type:
+      - ''
+      Accept-Encoding:
+      - ''
+      User-Agent:
+      - aws-sdk-ruby3/3.30.0 ruby/2.5.1 x86_64-linux aws-sdk-s3/1.21.0
+      Host:
+      - cloudkeeper-aws.s3.eu-central-1.amazonaws.com
+      X-Amz-Date:
+      - 20181022T090353Z
+      X-Amz-Content-Sha256:
+      - e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+      Authorization:
+      - ''
+      Content-Length:
+      - '0'
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Amz-Id-2:
+      - eAGzFBRVyIPxwOs9pv48/jJpUXEsxIyMbqayutw9WY3/hNqFJGz2RaGLKIZmoEekwJIQeeLymDM=
+      X-Amz-Request-Id:
+      - D46D47EA9F0C88EE
+      Date:
+      - Mon, 22 Oct 2018 09:03:54 GMT
+      X-Amz-Bucket-Region:
+      - eu-central-1
+      Content-Type:
+      - application/xml
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Mon, 22 Oct 2018 09:03:53 GMT
+- request:
+    method: post
+    uri: https://ec2.eu-central-1.amazonaws.com/
+    body:
+      encoding: UTF-8
+      string: Action=DescribeImages&Filter.1.Name=tag%3Acloudkeeper_appliance_image_list_identifier&Filter.1.Value.1=403c189b-66b4-5084-81cf-f2a9d602d29e&Filter.2.Name=tag%3Acloudkeeper_identifier&Filter.2.Value.1=cloudkeeper-aws&Version=2016-11-15
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=utf-8
+      Accept-Encoding:
+      - ''
+      User-Agent:
+      - aws-sdk-ruby3/3.30.0 ruby/2.5.1 x86_64-linux aws-sdk-ec2/1.50.0
+      Host:
+      - ec2.eu-central-1.amazonaws.com
+      X-Amz-Date:
+      - 20181022T090353Z
+      X-Amz-Content-Sha256:
+      - a92bbc66dfe7ba461581cb44679378d56354c930ac33580296050c3b6bac9b99
+      Authorization:
+      - ''
+      Content-Length:
+      - '234'
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '6630'
+      Vary:
+      - Accept-Encoding
+      Date:
+      - Mon, 22 Oct 2018 09:03:53 GMT
+      Server:
+      - AmazonEC2
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <DescribeImagesResponse xmlns="http://ec2.amazonaws.com/doc/2016-11-15/">
+            <requestId>a154ae37-628a-48e3-a364-fcc666fff652</requestId>
+            <imagesSet>
+                <item>
+                    <imageId>ami-0b1e0bdcabf70251e</imageId>
+                    <imageLocation>315503098552/import-ami-0098efb64d93ae6b1</imageLocation>
+                    <imageState>available</imageState>
+                    <imageOwnerId>315503098552</imageOwnerId>
+                    <creationDate>2018-10-15T11:43:34.000Z</creationDate>
+                    <isPublic>false</isPublic>
+                    <architecture>x86_64</architecture>
+                    <imageType>machine</imageType>
+                    <name>import-ami-0098efb64d93ae6b1</name>
+                    <description>AWS-VMImport service: Linux - Ubuntu 16.04.5 LTS - 4.4.0-130-generic</description>
+                    <rootDeviceType>ebs</rootDeviceType>
+                    <rootDeviceName>/dev/sda1</rootDeviceName>
+                    <blockDeviceMapping>
+                        <item>
+                            <deviceName>/dev/sda1</deviceName>
+                            <ebs>
+                                <snapshotId>snap-022ef32aeb7d9815a</snapshotId>
+                                <volumeSize>8</volumeSize>
+                                <deleteOnTermination>false</deleteOnTermination>
+                                <volumeType>gp2</volumeType>
+                                <encrypted>false</encrypted>
+                            </ebs>
+                        </item>
+                    </blockDeviceMapping>
+                    <virtualizationType>hvm</virtualizationType>
+                    <tagSet>
+                        <item>
+                            <key>cloudkeeper_appliance_version</key>
+                            <value>2018.07.20</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_expiration_date</key>
+                            <value>1547931600</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_password</key>
+                            <value>e398b22c-c83f-464d-b52b-398e0438854d</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_image_list_identifier</key>
+                            <value>403c189b-66b4-5084-81cf-f2a9d602d29e</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_architecture</key>
+                            <value>x86_64</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_description</key>
+                            <value>The Long Term Support version of Ubuntu support guaranteed until April 2021.This Virtual Machine has been created by the EGI Federated Cloud using a minimal Ubuntu 16.04 installation with cloud-init contextualization. In order to log into the image a ssh </value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_vo</key>
+                            <value>vo.emsodev.eu</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_digest</key>
+                            <value>2ef9a2379ca0dc55500dd8f1c2e913ad59e3c4c48d7aa0829691c71989e115285b59fdf3564fb31e002ea9c6b5bbe19158536ccb84b2a4ee03cec6e038503ef6</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_checksum</key>
+                            <value>d8d06be05884653c849982c5af0caa511b5ed4bb0985490d3752338485a2037cc9862c394b776508fcf583bc8bb3ac5b3daf994775fcc64b2823a56f417e7056</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_size</key>
+                            <value>509105664</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_title</key>
+                            <value>Image for EGI Ubuntu 16.04 LTS [Ubuntu/16.04/VirtualBox]</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_appid</key>
+                            <value>993</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_digest</key>
+                            <value>a3352773b4a568971cf1b712454a6c4ddee454c122e31b313e3e12941cc976509132ed99e20e48e3000ed0331018a3daa695e730925f9e5d93aa21de0710bc7d</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_mpuri</key>
+                            <value>https://appdb.egi.eu/store/vo/image/0e192e53-e60d-58f0-b0d3-49d49a192c6f:6578/</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_uri</key>
+                            <value>https://cephrgw01.ifca.es:8080/swift/v1/egi_endorsed_vas/Ubuntu.16.04-2018.07.20.ova</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_core</key>
+                            <value>0</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_location</key>
+                            <value>http://127.0.0.1:50505/Ubuntu.16.04-2018.07.20.ova</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_operating_system</key>
+                            <value>Linux Ubuntu 16.04</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_identifier</key>
+                            <value>cloudkeeper-aws</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_group</key>
+                            <value>General group</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_format</key>
+                            <value>OVA</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_mode</key>
+                            <value>REMOTE</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_ram</key>
+                            <value>0</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_username</key>
+                            <value>9b765142-dc2c-4710-9941-3d3e369afb26</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_identifier</key>
+                            <value>0e192e53-e60d-58f0-b0d3-49d49a192c6f</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_base_mpuri</key>
+                            <value>https://appdb.egi.eu/store/vm/image/46585644-6d71-481f-9700-4fee0ba874a1:7726/</value>
+                        </item>
+                    </tagSet>
+                    <hypervisor>xen</hypervisor>
+                    <enaSupport>false</enaSupport>
+                </item>
+            </imagesSet>
+        </DescribeImagesResponse>
+    http_version: 
+  recorded_at: Mon, 22 Oct 2018 09:03:54 GMT
+- request:
+    method: post
+    uri: https://ec2.eu-central-1.amazonaws.com/
+    body:
+      encoding: UTF-8
+      string: Action=DescribeImages&Filter.1.Name=tag%3Acloudkeeper_identifier&Filter.1.Value.1=cloudkeeper-aws&Version=2016-11-15
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=utf-8
+      Accept-Encoding:
+      - ''
+      User-Agent:
+      - aws-sdk-ruby3/3.30.0 ruby/2.5.1 x86_64-linux aws-sdk-ec2/1.50.0
+      Host:
+      - ec2.eu-central-1.amazonaws.com
+      X-Amz-Date:
+      - 20181022T090354Z
+      X-Amz-Content-Sha256:
+      - ca680d9e5b548fb4f911474ba372cdff3b0879df06b31af3af94a5265565abe6
+      Authorization:
+      - ''
+      Content-Length:
+      - '116'
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Date:
+      - Mon, 22 Oct 2018 09:03:54 GMT
+      Server:
+      - AmazonEC2
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <DescribeImagesResponse xmlns="http://ec2.amazonaws.com/doc/2016-11-15/">
+            <requestId>be871899-509d-4809-8bab-1624ca9255e7</requestId>
+            <imagesSet>
+                <item>
+                    <imageId>ami-0b1e0bdcabf70251e</imageId>
+                    <imageLocation>315503098552/import-ami-0098efb64d93ae6b1</imageLocation>
+                    <imageState>available</imageState>
+                    <imageOwnerId>315503098552</imageOwnerId>
+                    <creationDate>2018-10-15T11:43:34.000Z</creationDate>
+                    <isPublic>false</isPublic>
+                    <architecture>x86_64</architecture>
+                    <imageType>machine</imageType>
+                    <name>import-ami-0098efb64d93ae6b1</name>
+                    <description>AWS-VMImport service: Linux - Ubuntu 16.04.5 LTS - 4.4.0-130-generic</description>
+                    <rootDeviceType>ebs</rootDeviceType>
+                    <rootDeviceName>/dev/sda1</rootDeviceName>
+                    <blockDeviceMapping>
+                        <item>
+                            <deviceName>/dev/sda1</deviceName>
+                            <ebs>
+                                <snapshotId>snap-022ef32aeb7d9815a</snapshotId>
+                                <volumeSize>8</volumeSize>
+                                <deleteOnTermination>false</deleteOnTermination>
+                                <volumeType>gp2</volumeType>
+                                <encrypted>false</encrypted>
+                            </ebs>
+                        </item>
+                    </blockDeviceMapping>
+                    <virtualizationType>hvm</virtualizationType>
+                    <tagSet>
+                        <item>
+                            <key>cloudkeeper_appliance_version</key>
+                            <value>2018.07.20</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_expiration_date</key>
+                            <value>1547931600</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_password</key>
+                            <value>e398b22c-c83f-464d-b52b-398e0438854d</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_image_list_identifier</key>
+                            <value>403c189b-66b4-5084-81cf-f2a9d602d29e</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_architecture</key>
+                            <value>x86_64</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_description</key>
+                            <value>The Long Term Support version of Ubuntu support guaranteed until April 2021.This Virtual Machine has been created by the EGI Federated Cloud using a minimal Ubuntu 16.04 installation with cloud-init contextualization. In order to log into the image a ssh </value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_vo</key>
+                            <value>vo.emsodev.eu</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_digest</key>
+                            <value>2ef9a2379ca0dc55500dd8f1c2e913ad59e3c4c48d7aa0829691c71989e115285b59fdf3564fb31e002ea9c6b5bbe19158536ccb84b2a4ee03cec6e038503ef6</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_checksum</key>
+                            <value>d8d06be05884653c849982c5af0caa511b5ed4bb0985490d3752338485a2037cc9862c394b776508fcf583bc8bb3ac5b3daf994775fcc64b2823a56f417e7056</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_size</key>
+                            <value>509105664</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_title</key>
+                            <value>Image for EGI Ubuntu 16.04 LTS [Ubuntu/16.04/VirtualBox]</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_appid</key>
+                            <value>993</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_digest</key>
+                            <value>a3352773b4a568971cf1b712454a6c4ddee454c122e31b313e3e12941cc976509132ed99e20e48e3000ed0331018a3daa695e730925f9e5d93aa21de0710bc7d</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_mpuri</key>
+                            <value>https://appdb.egi.eu/store/vo/image/0e192e53-e60d-58f0-b0d3-49d49a192c6f:6578/</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_uri</key>
+                            <value>https://cephrgw01.ifca.es:8080/swift/v1/egi_endorsed_vas/Ubuntu.16.04-2018.07.20.ova</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_core</key>
+                            <value>0</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_location</key>
+                            <value>http://127.0.0.1:50505/Ubuntu.16.04-2018.07.20.ova</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_operating_system</key>
+                            <value>Linux Ubuntu 16.04</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_identifier</key>
+                            <value>cloudkeeper-aws</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_group</key>
+                            <value>General group</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_format</key>
+                            <value>OVA</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_mode</key>
+                            <value>REMOTE</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_ram</key>
+                            <value>0</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_username</key>
+                            <value>9b765142-dc2c-4710-9941-3d3e369afb26</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_identifier</key>
+                            <value>0e192e53-e60d-58f0-b0d3-49d49a192c6f</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_base_mpuri</key>
+                            <value>https://appdb.egi.eu/store/vm/image/46585644-6d71-481f-9700-4fee0ba874a1:7726/</value>
+                        </item>
+                    </tagSet>
+                    <hypervisor>xen</hypervisor>
+                    <enaSupport>false</enaSupport>
+                </item>
+                <item>
+                    <imageId>ami-0cadc82d94acddc7a</imageId>
+                    <imageLocation>315503098552/import-ami-032185a10605d4533</imageLocation>
+                    <imageState>available</imageState>
+                    <imageOwnerId>315503098552</imageOwnerId>
+                    <creationDate>2018-10-15T13:06:28.000Z</creationDate>
+                    <isPublic>false</isPublic>
+                    <architecture>x86_64</architecture>
+                    <imageType>machine</imageType>
+                    <name>import-ami-032185a10605d4533</name>
+                    <description>AWS-VMImport service: Linux - Ubuntu 16.04.5 LTS - 4.4.0-134-generic</description>
+                    <rootDeviceType>ebs</rootDeviceType>
+                    <rootDeviceName>/dev/sda1</rootDeviceName>
+                    <blockDeviceMapping>
+                        <item>
+                            <deviceName>/dev/sda1</deviceName>
+                            <ebs>
+                                <snapshotId>snap-0c344ad5de66224be</snapshotId>
+                                <volumeSize>2</volumeSize>
+                                <deleteOnTermination>false</deleteOnTermination>
+                                <volumeType>gp2</volumeType>
+                                <encrypted>false</encrypted>
+                            </ebs>
+                        </item>
+                    </blockDeviceMapping>
+                    <virtualizationType>hvm</virtualizationType>
+                    <tagSet>
+                        <item>
+                            <key>cloudkeeper_image_username</key>
+                            <value>91e6dee7-c4ae-41df-9624-6916488175e5</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_core</key>
+                            <value>1</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_expiration_date</key>
+                            <value>1567105200</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_base_mpuri</key>
+                            <value>https://appdb.egi.eu/store/vm/image/f42a12d5-dc43-4a4d-87b7-820f3e2fc5f6:7732/</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_format</key>
+                            <value>OVA</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_identifier</key>
+                            <value>e29454eb-d751-5bf8-9f81-91f5a4aac7ec</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_version</key>
+                            <value>2018.08.30b</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_ram</key>
+                            <value>0</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_title</key>
+                            <value>Image for EGI Small Ubuntu 16.04 for Monitoring [Ubuntu/16.04/VirtualBox]</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_checksum</key>
+                            <value>e586f541bc508dd10c485750d57b00cb342a59d71d0a3b4e2cea70a42b4e1e0e4533983642d1b3340fc91eadcdfe63a815f788c1a4426c06255bfc9699717e10</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_location</key>
+                            <value>http://127.0.0.1:50505/Small.Ubuntu.16.04-2018.08.30.ova</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_size</key>
+                            <value>442938368</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_identifier</key>
+                            <value>cloudkeeper-aws</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_mpuri</key>
+                            <value>https://appdb.egi.eu/store/vo/image/e29454eb-d751-5bf8-9f81-91f5a4aac7ec:6614/</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_operating_system</key>
+                            <value>Linux Ubuntu 16.04</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_digest</key>
+                            <value>6a5822e212fd4ccd6e67ac550ae8f1840ede0756c2180f67f524e931110ab4daec0265e3606dc3a0c98b1f3cc134e6de20916abff52378878e7e139be68cdc6a</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_image_list_identifier</key>
+                            <value>fc5fc591-2fa2-59ff-9f35-47a63a111d4f</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_appid</key>
+                            <value>1017</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_digest</key>
+                            <value>72a7af4a784f8697b2175bc7792e7088cc42bd97567574a8704b473ee41d973bd5ed3dcd6e073759c5ed63dca5f0f1c117571879141407ac9555aa402edea13d</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_architecture</key>
+                            <value>x86_64</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_uri</key>
+                            <value>https://cephrgw01.ifca.es:8080/swift/v1/egi_endorsed_vas/Small.Ubuntu.16.04-2018.08.30.ova</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_description</key>
+                            <value>Ubuntu 16.04 LTS with minimal installation and small root fs for monitoring purposes</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_vo</key>
+                            <value>ops</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_password</key>
+                            <value>18ec7e9e-8c71-4ce3-a250-c9c78cb07469</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_group</key>
+                            <value>General group</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_mode</key>
+                            <value>REMOTE</value>
+                        </item>
+                    </tagSet>
+                    <hypervisor>xen</hypervisor>
+                    <enaSupport>false</enaSupport>
+                </item>
+            </imagesSet>
+        </DescribeImagesResponse>
+    http_version: 
+  recorded_at: Mon, 22 Oct 2018 09:03:55 GMT
+- request:
+    method: post
+    uri: https://ec2.eu-central-1.amazonaws.com/
+    body:
+      encoding: UTF-8
+      string: Action=DescribeImages&Filter.1.Name=tag%3Acloudkeeper_appliance_image_list_identifier&Filter.1.Value.1=403c189b-66b4-5084-81cf-f2a9d602d29e&Filter.2.Name=tag%3Acloudkeeper_identifier&Filter.2.Value.1=cloudkeeper-aws&Version=2016-11-15
+    headers:
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=utf-8
+      Accept-Encoding:
+      - ''
+      User-Agent:
+      - aws-sdk-ruby3/3.30.0 ruby/2.5.1 x86_64-linux aws-sdk-ec2/1.50.0
+      Host:
+      - ec2.eu-central-1.amazonaws.com
+      X-Amz-Date:
+      - 20181022T090355Z
+      X-Amz-Content-Sha256:
+      - a92bbc66dfe7ba461581cb44679378d56354c930ac33580296050c3b6bac9b99
+      Authorization:
+      - ''
+      Content-Length:
+      - '234'
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Content-Length:
+      - '6630'
+      Vary:
+      - Accept-Encoding
+      Date:
+      - Mon, 22 Oct 2018 09:03:55 GMT
+      Server:
+      - AmazonEC2
+    body:
+      encoding: UTF-8
+      string: |-
+        <?xml version="1.0" encoding="UTF-8"?>
+        <DescribeImagesResponse xmlns="http://ec2.amazonaws.com/doc/2016-11-15/">
+            <requestId>a5a10588-586f-4482-96e3-c1e961e0d6c0</requestId>
+            <imagesSet>
+                <item>
+                    <imageId>ami-0b1e0bdcabf70251e</imageId>
+                    <imageLocation>315503098552/import-ami-0098efb64d93ae6b1</imageLocation>
+                    <imageState>available</imageState>
+                    <imageOwnerId>315503098552</imageOwnerId>
+                    <creationDate>2018-10-15T11:43:34.000Z</creationDate>
+                    <isPublic>false</isPublic>
+                    <architecture>x86_64</architecture>
+                    <imageType>machine</imageType>
+                    <name>import-ami-0098efb64d93ae6b1</name>
+                    <description>AWS-VMImport service: Linux - Ubuntu 16.04.5 LTS - 4.4.0-130-generic</description>
+                    <rootDeviceType>ebs</rootDeviceType>
+                    <rootDeviceName>/dev/sda1</rootDeviceName>
+                    <blockDeviceMapping>
+                        <item>
+                            <deviceName>/dev/sda1</deviceName>
+                            <ebs>
+                                <snapshotId>snap-022ef32aeb7d9815a</snapshotId>
+                                <volumeSize>8</volumeSize>
+                                <deleteOnTermination>false</deleteOnTermination>
+                                <volumeType>gp2</volumeType>
+                                <encrypted>false</encrypted>
+                            </ebs>
+                        </item>
+                    </blockDeviceMapping>
+                    <virtualizationType>hvm</virtualizationType>
+                    <tagSet>
+                        <item>
+                            <key>cloudkeeper_appliance_version</key>
+                            <value>2018.07.20</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_expiration_date</key>
+                            <value>1547931600</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_password</key>
+                            <value>e398b22c-c83f-464d-b52b-398e0438854d</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_image_list_identifier</key>
+                            <value>403c189b-66b4-5084-81cf-f2a9d602d29e</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_architecture</key>
+                            <value>x86_64</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_description</key>
+                            <value>The Long Term Support version of Ubuntu support guaranteed until April 2021.This Virtual Machine has been created by the EGI Federated Cloud using a minimal Ubuntu 16.04 installation with cloud-init contextualization. In order to log into the image a ssh </value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_vo</key>
+                            <value>vo.emsodev.eu</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_digest</key>
+                            <value>2ef9a2379ca0dc55500dd8f1c2e913ad59e3c4c48d7aa0829691c71989e115285b59fdf3564fb31e002ea9c6b5bbe19158536ccb84b2a4ee03cec6e038503ef6</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_checksum</key>
+                            <value>d8d06be05884653c849982c5af0caa511b5ed4bb0985490d3752338485a2037cc9862c394b776508fcf583bc8bb3ac5b3daf994775fcc64b2823a56f417e7056</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_size</key>
+                            <value>509105664</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_title</key>
+                            <value>Image for EGI Ubuntu 16.04 LTS [Ubuntu/16.04/VirtualBox]</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_appid</key>
+                            <value>993</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_digest</key>
+                            <value>a3352773b4a568971cf1b712454a6c4ddee454c122e31b313e3e12941cc976509132ed99e20e48e3000ed0331018a3daa695e730925f9e5d93aa21de0710bc7d</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_mpuri</key>
+                            <value>https://appdb.egi.eu/store/vo/image/0e192e53-e60d-58f0-b0d3-49d49a192c6f:6578/</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_uri</key>
+                            <value>https://cephrgw01.ifca.es:8080/swift/v1/egi_endorsed_vas/Ubuntu.16.04-2018.07.20.ova</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_core</key>
+                            <value>0</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_location</key>
+                            <value>http://127.0.0.1:50505/Ubuntu.16.04-2018.07.20.ova</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_operating_system</key>
+                            <value>Linux Ubuntu 16.04</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_identifier</key>
+                            <value>cloudkeeper-aws</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_group</key>
+                            <value>General group</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_format</key>
+                            <value>OVA</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_mode</key>
+                            <value>REMOTE</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_ram</key>
+                            <value>0</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_image_username</key>
+                            <value>9b765142-dc2c-4710-9941-3d3e369afb26</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_identifier</key>
+                            <value>0e192e53-e60d-58f0-b0d3-49d49a192c6f</value>
+                        </item>
+                        <item>
+                            <key>cloudkeeper_appliance_base_mpuri</key>
+                            <value>https://appdb.egi.eu/store/vm/image/46585644-6d71-481f-9700-4fee0ba874a1:7726/</value>
+                        </item>
+                    </tagSet>
+                    <hypervisor>xen</hypervisor>
+                    <enaSupport>false</enaSupport>
+                </item>
+            </imagesSet>
+        </DescribeImagesResponse>
+    http_version: 
+  recorded_at: Mon, 22 Oct 2018 09:03:55 GMT
+recorded_with: VCR 4.0.0

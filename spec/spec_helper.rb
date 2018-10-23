@@ -5,6 +5,7 @@ require 'cloudkeeper_grpc'
 require 'yell'
 require 'simplecov'
 require 'codecov'
+require 'aws-sdk-s3'
 
 SimpleCov.start
 SimpleCov.formatter = SimpleCov::Formatter::Codecov
@@ -25,3 +26,5 @@ end
 
 Yell.new :file, '/dev/null', name: Object, level: 'error', format: Yell::DefaultFormat
 Object.send :include, Yell::Loggable
+
+::Aws.config.update(credentials: Aws::Credentials.new('access', 'secret'))

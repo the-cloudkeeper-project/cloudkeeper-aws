@@ -19,6 +19,7 @@ module Cloudkeeper
       end
 
       def deregister_image(appliance)
+        logger.debug { "Deregistering appliance #{appliance.identifier}" }
         image = cloud.find_appliance(appliance.identifier)
         cloud.deregister_image(image.image_id)
       end
@@ -49,6 +50,15 @@ module Cloudkeeper
       def fetch_appliances(image_list_identifier)
         images = cloud.search_images(FilterHelper.image_list(image_list_identifier.image_list_identifier))
         images.map { |image| ProtoHelper.appliance_from_tags(image.tags) }
+      end
+
+      def deregister_expired_appliances
+        images = cloud.search_images(FilterHelper.cloudkeeper_instance)
+        appliances = images.map { |image| ProtoHelper.appliance_from_tags(image.tags) }
+        appliances.keep_if { |appliance| appliance.expiration_date <= Time.now.to_i }
+
+        logger.debug { "Expired appliances #{appliances.map(&:identifier).inspect}" }
+        appliances.each { |expired| deregister_image(expired) }
       end
     end
   end

@@ -95,6 +95,14 @@ module Cloudkeeper
         logger.debug { "GRPC appliances for: #{image_list_identifier.image_list_identifier}" }
         handle_error { fetch_appliances(image_list_identifier).each }
       end
+
+      def remove_expired_appliances(_empty, _call)
+        logger.debug { 'GRPC remove expired appliances' }
+        handle_error do
+          deregister_expired_appliances
+          Google::Protobuf::Empty.new
+        end
+      end
     end
   end
 end
