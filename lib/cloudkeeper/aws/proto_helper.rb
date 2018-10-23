@@ -6,6 +6,7 @@ module Cloudkeeper
       class << self
         APPLIANCE_PREFIX = 'cloudkeeper_appliance_'.freeze
         IMAGE_PREFIX = 'cloudkeeper_image_'.freeze
+        NAME_TAG_KEY = 'Name'.freeze
         EXTRA_APPLIANCE_TAGS = %i[description title].freeze
 
         def filter_tags(tags, prefix)
@@ -32,6 +33,7 @@ module Cloudkeeper
           tags += image_to_tags(image) if image
           tags << { key: Cloudkeeper::Aws::FilterHelper::TAG_CLOUDKEEPER_IDENTIFIER,
                     value: Cloudkeeper::Aws::Settings['identifier'] }
+          tags << { key: NAME_TAG_KEY, value: appliance_hash[:title] }
         end
 
         def appliance_from_tags(tags)
