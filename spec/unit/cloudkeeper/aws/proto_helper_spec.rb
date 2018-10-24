@@ -36,7 +36,8 @@ module Cloudkeeper
          { key: 'cloudkeeper_appliance_base_mpuri', value: 'http://remotehost/base_mpuri' },
          { key: 'cloudkeeper_appliance_appid', value: '15' },
          { key: 'cloudkeeper_appliance_digest', value: 'c87q420' },
-         { key: 'cloudkeeper_identifier', value: 'cloudkeeper-aws' }] + image_tags
+         { key: 'cloudkeeper_identifier', value: 'cloudkeeper-aws' },
+         { key: 'Name', value: 'StubImage 0.1' }] + image_tags
       end
 
       describe '#appliance_to_tags' do
