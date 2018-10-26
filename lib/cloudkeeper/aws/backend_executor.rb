@@ -2,12 +2,23 @@ module Cloudkeeper
   module Aws
     # Module handling complex operations on cloud backend
     module BackendExecutor
-      def upload_appliance(appliance)
+      def upload_local_appliance(appliance)
+        cloud.upload_file(appliance.identifier, appliance.image.location)
+      end
+
+      def upload_remote_appliance(appliance)
         cloud.upload_data(appliance.identifier) do |write_stream|
-          ImageDownloader.download(appliance.image.location, appliance.image.username, appliance.image.password) do |image_segment|
-            write_stream << image_segment
-          end
+          ImageDownloader.download(appliance.image.location,
+                                   appliance.image.username,
+                                   appliance.image.password) do |image_segment|
+                                     write_stream << image_segment
+                                   end
         end
+      end
+
+      def upload_appliance(appliance)
+        upload_remote_appliance(appliance) if appliance.image.mode == :REMOTE
+        upload_local_appliance(appliance) if appliance.image.mode == :LOCAL
       end
 
       def register_appliance(appliance)
