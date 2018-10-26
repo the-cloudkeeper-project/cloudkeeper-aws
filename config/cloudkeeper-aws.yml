@@ -1,6 +1,6 @@
-polling-timeout: 3600
-polling-interval: 2
-bucket-name: cloudkeeper-aws
+polling-timeout: 3600 # Timeout in seconds for AWS image import task polling
+polling-interval: 2 # Interval in seconds for AWS image import task polling
+bucket-name: cloudkeeper-aws # Bucket that is used for storing images during image import task
 listen-address: 127.0.0.1:50051 # IP address gRPC server will listen on
 authentication: false # core (client) <-> backend (server) authentication (certificate, key and core-certificate options)
 certificate: /etc/grid-security/hostcert.pem # Backend's host certificate
@@ -13,5 +13,5 @@ logging:
   file: /var/log/cloudkeeper/cloudkeeper-aws.log # File to write log to. To turn off file logging leave this field empty.
 progress: false
 debug: false # Debug mode
-aws:
+aws: # Any AWS config data can be set here
     region: eu-central-1
