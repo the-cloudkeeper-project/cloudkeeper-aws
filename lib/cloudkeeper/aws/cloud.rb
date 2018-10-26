@@ -29,7 +29,7 @@ module Cloudkeeper
       # @yield [write_stream] output stream
       # @raise [Cloudkeeper::Aws::Errors::BackendError] if file already exists
       def upload_data(file_name, &block)
-        logger.debug { "Block uploading to entry(#file_name) in bucket(#{Cloudkeeper::Aws::Settings['bucket-name']})" }
+        logger.debug { "Block uploading to entry (#{file_name}) in bucket(#{Cloudkeeper::Aws::Settings['bucket-name']})" }
         obj = bucket.object(file_name)
         if obj.exists?
           raise Cloudkeeper::Aws::Errors::Backend::BackendError,
@@ -45,7 +45,7 @@ module Cloudkeeper
       # @param file_path [String] name of file on local machine
       # @raise [Cloudkeeper::Aws::Errors::BackendError] if file already exists
       def upload_file(file_name, file_path)
-        logger.debug { "Local file uploading to entry(#file_name) in bucket(#{Cloudkeeper::Aws::Settings['bucket-name']})" }
+        logger.debug { "Local file uploading to entry (#{file_name}) in bucket(#{Cloudkeeper::Aws::Settings['bucket-name']})" }
         obj = bucket.object(file_name)
         if obj.exists?
           raise Cloudkeeper::Aws::Errors::Backend::BackendError,
