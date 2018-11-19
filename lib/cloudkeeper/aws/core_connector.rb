@@ -7,18 +7,18 @@ module Cloudkeeper
       include Cloudkeeper::Aws::BackendExecutor
 
       ERRORS = {
-        Cloudkeeper::Aws::Errors::Backend::ApplianceNotFoundError \
-          => CloudkeeperGrpc::Constants::STATUS_CODE_APPLIANCE_NOT_FOUND,
-        Cloudkeeper::Aws::Errors::Backend::MultipleAppliancesFoundError \
-          => CloudkeeperGrpc::Constants::STATUS_CODE_INVALID_RESOURCE_STATE,
-        Cloudkeeper::Aws::Errors::Backend::ImageImportError \
-          => CloudkeeperGrpc::Constants::STATUS_CODE_FAILED_APPLIANCE_TRANSFER,
-        Cloudkeeper::Aws::Errors::Backend::TimeoutError \
-          => CloudkeeperGrpc::Constants::STATUS_CODE_FAILED_APPLIANCE_TRANSFER,
-        Cloudkeeper::Aws::Errors::Backend::BackendError \
-          => CloudkeeperGrpc::Constants::STATUS_CODE_UNKNOWN,
-        Cloudkeeper::Aws::Errors::ImageDownloadError \
-          => CloudkeeperGrpc::Constants::STATUS_CODE_UNKNOWN
+        Cloudkeeper::Aws::Errors::Backend::ApplianceNotFoundError => \
+          CloudkeeperGrpc::Constants::STATUS_CODE_APPLIANCE_NOT_FOUND,
+        Cloudkeeper::Aws::Errors::Backend::MultipleAppliancesFoundError => \
+          CloudkeeperGrpc::Constants::STATUS_CODE_INVALID_RESOURCE_STATE,
+        Cloudkeeper::Aws::Errors::Backend::ImageImportError => \
+          CloudkeeperGrpc::Constants::STATUS_CODE_FAILED_APPLIANCE_TRANSFER,
+        Cloudkeeper::Aws::Errors::Backend::TimeoutError => \
+          CloudkeeperGrpc::Constants::STATUS_CODE_FAILED_APPLIANCE_TRANSFER,
+        Cloudkeeper::Aws::Errors::Backend::BackendError => \
+          CloudkeeperGrpc::Constants::STATUS_CODE_UNKNOWN,
+        Cloudkeeper::Aws::Errors::ImageDownloadError => \
+          CloudkeeperGrpc::Constants::STATUS_CODE_UNKNOWN
       }.freeze
 
       def initialize(cloud)
